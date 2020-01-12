@@ -1,0 +1,26 @@
+[
+	{
+		"id": 1,
+		"name": "Tintin 1",
+		"slug": "tintin-1",
+		"description": "Tintin et les 100 voleurs",
+		"date_created": "2019-12-23T17:26:08+01:00",
+		"user_created": "romain",
+		"date_updated": "2019-12-30T16:07:08+01:00",
+		"user_updated": "romain",
+		"status": 1,
+		"image_id": 1
+	},
+	{
+		"id": 1,
+		"name": "Tintin 2",
+		"slug": "tintin-2",
+		"description": "Tintin et les 101 voleurs",
+		"date_created": "2019-12-23T17:26:08+01:00",
+		"user_created": "romain",
+		"date_updated": "2019-12-30T16:07:08+01:00",
+		"user_updated": "romain",
+		"status": 1,
+		"image_id": 1
+	}
+]

@@ -1,0 +1,15 @@
+.container_settings {
+	span {
+		position: relative;
+		line-height: 40px;
+		display: inline-block;
+
+		&:nth-child(2) {
+			padding: 0 10px;
+		}
+	}
+
+	.survey_username {
+		text-transform: capitalize;
+	}
+}

@@ -1,0 +1,52 @@
+{
+	"stories": {
+		"Eoo4QNVzCQBiUeHauXUD": {
+			"image_id": 0,
+			"date_updated": "2019-12-23T17:26:08+01:00",
+			"id": 3,
+			"date_created": "2019-12-23T17:26:08+01:00",
+			"description": "This is Zorro",
+			"user_created": "romain",
+			"slug": "zorro",
+			"user_updated": "romain",
+			"status": 8,
+			"name": "Zorro"
+		},
+		"Fkyy7yCHEq7gYg4j1e5D": {
+			"date_created": "2019-12-23T17:26:08+01:00",
+			"description": "Tintin et les 100 voleurs",
+			"user_created": "romain",
+			"slug": "tintin-1",
+			"user_updated": "romain",
+			"status": 1,
+			"name": "Tintin 1",
+			"image_id": 0,
+			"date_updated": "2019-12-23T17:26:08+01:00",
+			"id": 1
+		},
+		"JMFa4ukb2SLTUbZ7v72Z": {
+			"date_created": "2019-12-23T17:26:08+01:00",
+			"description": "Ceci est un test",
+			"user_created": "romain",
+			"slug": "batman",
+			"user_updated": "theo",
+			"status": 1,
+			"name": "Batman",
+			"image_id": 2,
+			"date_updated": "2019-12-23T17:26:08+01:00",
+			"id": 2
+		},
+		"ZJpIgl0voW87e3lkO1UV": {
+			"date_created": "2019-12-23T17:26:08+01:00",
+			"description": "Ajout d'une description",
+			"user_created": "theo",
+			"slug": "batman",
+			"user_updated": "romain",
+			"status": 1,
+			"name": "Batman",
+			"date_updated": "2019-12-23T17:26:08+01:00",
+			"id": 4,
+			"id_image": 0
+		}
+	}
+}

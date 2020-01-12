@@ -1,0 +1,79 @@
+.survey_card {
+	position: relative;
+	height: 220px;
+	width: 100%;
+	border: 1px solid rgba(0, 0, 0, 0.9);
+	border-radius: 15px;
+
+	&:hover {
+		box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+		-webkit-transform: translateY(-2px);
+		transform: translateY(-2px);
+	}
+
+	.card_image,
+	.card_backdrop {
+		position: absolute;
+		left: 0;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		height: 100%;
+		width: 100%;
+		border-radius: 15px;
+	}
+
+	.card_backdrop {
+		background: rgba(0, 0, 0, 0.5);
+	}
+
+	.card_body {
+		position: relative;
+		color: rgba(255, 255, 255, 0.8);
+		text-align: center;
+		height: 100%;
+		width: 100%;
+
+		&:hover {
+			color: rgba(255, 255, 255, 1) !important;
+		}
+
+		.body_type,
+		.body_visibility {
+			font-size: 15px;
+			height: 35px;
+
+			.type_container,
+			.visibility_container {
+				height: 100%;
+				width: 75%;
+				background-color: #fff;
+				color: rgba(0, 0, 0, 0.9);
+				padding: 6px 0;
+			}
+
+			.type_container {
+				border-radius: 15px 0px 15px 0px; /* top left, top right, bottom right, bottom left */
+			}
+			.visibility_container {
+				float: right;
+				padding: 0 auto;
+				border-radius: 0px 15px 0px 15px; /* top left, top right, bottom right, bottom left */
+			}
+		}
+
+		.body_title {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		.body_status {
+			position: absolute;
+			left: 50%;
+			bottom: 0%;
+			transform: translate(-50%, -0%);
+		}
+	}
+}
