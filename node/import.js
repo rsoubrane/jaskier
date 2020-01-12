@@ -25,7 +25,7 @@ if (geoArray) {
 // Init
 admin.initializeApp({
 	credential: admin.credential.cert(serviceAccount),
-	databaseURL: "https://pym-project.firebaseio.com"
+	databaseURL: "https://jaskier.firebaseio.com"
 });
 
 const db = admin.firestore();

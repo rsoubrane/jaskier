@@ -23,7 +23,7 @@ export const registerUser = (username, email, password, confirmPassword) => {
 				createdAt: new Date().toISOString(),
 				username,
 				email,
-				isAdmin: false
+				role: "user"
 			};
 			localStorage.setItem("Token", token);
 			return db.doc(`/users/${username}`).set(userCredentials);

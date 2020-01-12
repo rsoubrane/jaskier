@@ -12,7 +12,7 @@ let subCollection = process.argv[3];
 // Init
 admin.initializeApp({
 	credential: admin.credential.cert(serviceAccount),
-	databaseURL: "https://pym-project.firebaseio.com"
+	databaseURL: "https://jaskier.firebaseio.com"
 });
 
 let db = admin.firestore();
