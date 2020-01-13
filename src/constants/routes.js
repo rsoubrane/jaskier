@@ -9,6 +9,9 @@ export const NEW_STORY = "/admin/story/add";
 export const CHAPTER = "/admin/story/:storySlug/chapter";
 export const NEW_CHAPTER = "/admin/story/:storySlug/chapter/add";
 
+//Game
+export const GAME = "/game";
+
 //Signing
 export const SIGN_UP = "/signup";
 export const SIGN_IN = "/signin";

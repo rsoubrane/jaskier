@@ -1,25 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useParams } from "react";
 
 //Components
-import FormInput from "../../form/Form";
-import LazyLoad from "../../medias/LazyLoad";
+import FormInput from "../../components/Forms/Form";
+import LazyLoad from "../../components/Utils/LazyLoad";
 
 //Assets
-import LogoFD from "../../../assets/img/free/Logo FD2.png";
+import LogoFD from "../../assets/img/logo.png";
 
 //Utils
 import { Button, Card, CardBody, Form, Row, Col } from "reactstrap";
 import { components } from "react-select";
 
+//Services
+import { db } from "../../utils/Firebase/firebase";
+
 const { Option } = components;
 
-export default function Answer(props) {
-	const page = props.currentPage;
+export default function Game(props) {
+	const question = props.currentQuestion;
 
-	const type = props.pageType;
+	const type = props.questionType;
 
-	const current = page.id;
-	const total = props.totalPage;
+	const current = question.id;
+	const total = props.totalQuestion;
 
 	const checkSelected = props.checkSelected;
 	const selectedAnswers = props.selectedAnswers;
@@ -36,43 +39,43 @@ export default function Answer(props) {
 	};
 
 	const previous = () => {
-		returnPageAnswer(current, selected);
+		returnQuestionAnswer(current, selected);
 		setSelected([]);
-		props.previousPage();
+		props.previousQuestion();
 	};
 
 	const next = () => {
-		returnPageAnswer(current, selected);
+		returnQuestionAnswer(current, selected);
 		setSelected([]);
-		props.nextPage();
+		props.nextQuestion();
 	};
 
-	const returnPageAnswer = (page, answers) => {
-		console.log(`Answers to page ${page} are : ${answers}`);
+	const returnQuestionAnswer = (question, answers) => {
+		console.log(`Answers to question ${question} are : ${answers}`);
 	};
 
 	return (
 		<>
 			<Form className='container_answer mt--7'>
 				<Card className='bg-secondary shadow'>
-					<CardBody className='page_details'>
+					<CardBody className='question_details'>
 						<Row>
-							<Col xs={`${page.image ? 6 : 12}`} className='page_label'>
-								{page.label}
-								<Row className='page_bottom'>
-									<div className='page_type'>{type}</div>
-									{page.isRequired === true ? (
-										<div className='page_isRequired'>Obligatoire</div>
+							<Col xs={`${question.image ? 6 : 12}`} className='question_label'>
+								{question.label}
+								<Row className='question_bottom'>
+									<div className='question_type'>{type}</div>
+									{question.isRequired === true ? (
+										<div className='question_isRequired'>Obligatoire</div>
 									) : null}
 								</Row>
 							</Col>
 
-							<Col xs='6' className={`page_image ${page.image ? "d-block" : "d-none"}`}>
-								{page.image ? <LazyLoad imageId={page.image} /> : null}
+							<Col xs='6' className={`question_image ${question.image ? "d-block" : "d-none"}`}>
+								{question.image ? <LazyLoad imageId={question.image} /> : null}
 							</Col>
 						</Row>
 
-						<Row className='page_options mt-5'>
+						<Row className='question_options mt-5'>
 							{type === "Liste déroulante" ? (
 								<>
 									<Col xs='6' className='option_select'>
@@ -82,7 +85,7 @@ export default function Answer(props) {
 											name='reponse'
 											option={props => <Option {...props}>{props.data.option}</Option>}
 											value={Object.values(selected).length ? selected : "Choisissez une réponse"}
-											options={Object.values(page.options)}
+											options={Object.values(question.options)}
 											change={handleSelect}
 											placeholder={"Choissez une réponse"}
 										/>
@@ -90,7 +93,7 @@ export default function Answer(props) {
 								</>
 							) : (
 								<>
-									{page.options.map((option, index) => (
+									{question.options.map((option, index) => (
 										<Col xs='3' className='option_card' key={index}>
 											<Card
 												onClick={() => checkSelected(index)}
@@ -121,7 +124,7 @@ export default function Answer(props) {
 							<Col className='text-right'>
 								<Button
 									color='primary'
-									disabled={!selected.length && page.isRequired}
+									disabled={!selected.length && question.isRequired}
 									onClick={() => next()}
 									size='md'>
 									Répondre
@@ -132,7 +135,7 @@ export default function Answer(props) {
 				</Card>
 			</Form>
 			<Row className='mt-4 justify-content-center'>
-				<div className='page_count'>
+				<div className='question_count'>
 					<span>{current} </span> sur <span> {total}</span>
 				</div>
 			</Row>

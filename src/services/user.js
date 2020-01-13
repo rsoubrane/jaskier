@@ -1,6 +1,9 @@
 import { auth, db } from "../utils/Firebase/firebase";
 import axios from "axios";
 
+//Constants
+import * as ROUTES from "../constants/routes";
+
 export const registerUser = (username, email, password, confirmPassword) => {
 	let token, userId;
 	db.doc(`/users/${username}`)
@@ -28,6 +31,7 @@ export const registerUser = (username, email, password, confirmPassword) => {
 			localStorage.setItem("Token", token);
 			return db.doc(`/users/${username}`).set(userCredentials);
 		})
+		.then((document.location.href = ROUTES.HOME))
 		.catch(err => {
 			console.error(err);
 			if (err.code === "auth/email-already-in-use") {
@@ -38,13 +42,15 @@ export const registerUser = (username, email, password, confirmPassword) => {
 		});
 };
 
-export const loginUser = (email, password) => {
-	auth.signInWithEmailAndPassword(email, password)
+export const loginUser = async (email, password) => {
+	await auth
+		.signInWithEmailAndPassword(email, password)
 		.then(data => {
 			return data.user.getIdToken();
 		})
 		.then(token => {
 			localStorage.setItem("Token", token);
+			document.location.href = ROUTES.HOME;
 			return token;
 		})
 		.catch(err => {
@@ -63,13 +69,16 @@ export const logoutUser = () => {
 		});
 };
 
-export const getUserData = () => {
-	var user = auth.currentUser;
-
-	if (user) {
-		console.log(user);
-		// User is signed in.
-	} else {
-		// No user is signed in.
-	}
+export const getUserData = userId => {
+	let user = {};
+	db.collection("users")
+		.where("userId", "==", userId)
+		.get()
+		.then(querySnapshot => {
+			querySnapshot.docs.forEach(doc => {
+				user = doc.data();
+				console.log("user: ", user);
+			});
+		});
+	return user;
 };

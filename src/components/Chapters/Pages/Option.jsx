@@ -52,10 +52,10 @@ Option.Choices = class Choices extends Component {
 					<Handle />
 				</Col>
 
-				<Col xs='10' lg='9' className='input_option'>
+				<Col xs='10' lg='8' className='input_option'>
 					<FormInput.InputText id={id} name={`Option${id}`} value={option.text} change={change} />
 				</Col>
-				<Col xs='1' lg='2' className='action_icons'>
+				<Col xs='1' lg='3' className='action_icons'>
 					<Button size='sm' className='icon_container' onClick={() => duplicate(option, id)}>
 						<Duplicate className='icon' />
 					</Button>

@@ -16,6 +16,7 @@ import ChapterSettings from "./settings";
 
 //Services
 import { db } from "../../utils/Firebase/firebase";
+import { getChapter } from "../../services/data";
 
 // Assets
 import bgDefault from "../../assets/img/bg-campaign.png";

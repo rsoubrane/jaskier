@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
 //Firebase
-import { registerUser } from "../../utils/handlers";
+import { registerUser } from "../../services/user";
 
 //Utils
 import { Link } from "react-router-dom";
-import { validateSignupData } from "../../utils/validators";
+import { validateSignupData } from "../../services/validators";
 
 //Constants
 import * as ROUTES from "../../constants/routes";

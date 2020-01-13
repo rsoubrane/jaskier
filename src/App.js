@@ -8,7 +8,7 @@ import * as ROUTES from "./constants/routes";
 //Utils
 import axios from "axios";
 import jwtDecode from "jwt-decode";
-import { logoutUser } from "./utils/handlers";
+import { logoutUser } from "./services/user";
 
 //Components
 import Navigation from "./components/Navigation";
@@ -18,8 +18,9 @@ import AuthRoute from "./utils/AuthRoute";
 import Home from "./pages/Home";
 import Story from "./pages/Story";
 import StoryAdd from "./pages/Story/add";
-import Chapter from "./pages/Chapter/";
+import Chapter from "./pages/Chapter";
 import ChapterAdd from "./pages/Chapter/add";
+import Game from "./pages/Game";
 import SignIn from "./pages/Signing/SignIn";
 import SignUp from "./pages/Signing/SignUp";
 // import Admin from "./pages/Admin";
@@ -51,6 +52,7 @@ const App = () => (
 			<Route exact path={`${ROUTES.STORY}/:storySlug`} component={Story} />
 			<Route exact path={ROUTES.NEW_CHAPTER} component={ChapterAdd} />
 			<Route exact path={`${ROUTES.CHAPTER}/:chapterSlug`} component={Chapter} />
+			<Route exact path={`${ROUTES.GAME}/:storySlug`} component={Game} />
 			<AuthRoute exact path={ROUTES.SIGN_IN} component={SignIn} />
 			<AuthRoute exact path={ROUTES.SIGN_UP} component={SignUp} />
 			{/* <Route path={ROUTES.ADMIN} component={Admin} /> */}

@@ -3,21 +3,24 @@ import React, { useState } from "react";
 //Utils
 import { Row } from "reactstrap";
 import cloneDeep from "lodash/cloneDeep";
+import { DragDropContext } from "react-beautiful-dnd";
 
 //Components
 import List from "../../components/Chapters/Pages/List";
 import Editor from "../../components/Chapters/Pages/Editor";
 
+//Utils
+import { submitAdd, submitEdit, submitRemove } from "../../services/data";
+
 export default function ChaptersDetails(props) {
 	const [chapter] = useState(props.chapter);
 	const [pages, setPages] = useState(chapter.pages);
 	const [selectedPage, setSelectedPage] = useState(pages[0]);
+	const [selectedIndex, setSelectedIndex] = useState(0);
 
 	const [isBlockEditorOpen, setIsBlockEditorOpen] = useState(true);
 
-	const handleBlockEditor = idPage => {
-		const index = pages.findIndex(x => x.id === idPage);
-
+	const handleBlockEditor = index => {
 		if (isBlockEditorOpen === false) {
 			triggerBlockEditor();
 			setSelectedPage({});
@@ -27,65 +30,56 @@ export default function ChaptersDetails(props) {
 			setSelectedPage({});
 		} else {
 			setSelectedPage(pages[index]);
+			setSelectedIndex(index);
 		}
 	};
 	const triggerBlockEditor = () => {
 		setIsBlockEditorOpen(!isBlockEditorOpen);
 	};
 
-	const findIndex = idPage => {
-		const index = pages.findIndex(x => x.id === idPage);
-		return index;
-	};
+	const addPage = (indexPage, pageToDuplicate) => {
+		if (indexPage == null) indexPage = pages.length;
 
-	const addPage = idPage => {
-		let index;
-		if (typeof idPage == "number") {
-			index = findIndex(idPage);
+		const copyPages = cloneDeep(pages);
+
+		let newPage = "";
+		if (pageToDuplicate) {
+			newPage = {
+				id: pages.length + 1,
+				text: pageToDuplicate.text,
+				type: pageToDuplicate.type,
+				options: pageToDuplicate.options,
+				isRequired: pageToDuplicate.isRequired
+			};
 		} else {
-			index = pages.length;
+			newPage = {
+				id: pages.length + 1,
+				text: "Votre nouvelle page :",
+				image: "",
+				options: [
+					{ id: 1, text: "Choix 1" },
+					{ id: 2, text: "Choix 2" },
+					{ id: 3, text: "Choix 3" }
+				],
+				type: 1,
+				isRequired: true
+			};
 		}
-		const copyPages = cloneDeep(pages);
-		copyPages.splice(index + 1, 0, {
-			id: pages.length + 1,
-			label: "Votre nouvelle page :",
-			image: "",
-			options: [
-				{ id: 1, option: "Choix 1" },
-				{ id: 2, option: "Choix 2" },
-				{ id: 3, option: "Choix 3" }
-			],
-			type: 1,
-			isRequired: true
-		});
-	};
-
-	const duplicatePage = (pageToDuplicate, idPage) => {
-		const index = findIndex(idPage);
-
-		const duplicatedPage = cloneDeep(pageToDuplicate);
-
-		const pageList = pages.slice();
-		pageList.splice(index + 1, 0, {
-			id: pages.length + 1,
-			label: duplicatedPage.label,
-			type: duplicatedPage.type,
-			options: duplicatedPage.options,
-			isRequired: duplicatedPage.isRequired
-		});
-
-		setPages(pageList);
-	};
-
-	const removePage = idPage => {
-		const index = findIndex(idPage);
-
-		const copyPages = cloneDeep(pages);
-		copyPages.splice(index, 1);
+		copyPages.splice(indexPage + 1, 0, newPage);
+		copyPages.map((v, index) => ({ ...v, order: index + 1 }));
 		setPages(copyPages);
-		setSelectedPage({});
 
-		triggerBlockEditor();
+		submitAdd(newPage, indexPage);
+	};
+
+	const removePage = indexPage => {
+		const copyPages = cloneDeep(pages);
+		if (indexPage === 0) setSelectedIndex(0);
+		if (indexPage === pages.length - 1) setSelectedIndex(pages.length - 2);
+		copyPages.splice(indexPage, 1);
+		setSelectedPage(copyPages[selectedIndex]);
+		setPages(copyPages);
+		submitRemove(indexPage);
 	};
 
 	const submitChanges = (updatedPage, idPage) => {
@@ -94,41 +88,67 @@ export default function ChaptersDetails(props) {
 	const cancelChanges = idPage => {
 		editPage(selectedPage, idPage);
 	};
-	const editPage = (updatedPage, idPage) => {
-		const index = findIndex(idPage);
 
-		const copyUpdatedPage = cloneDeep(updatedPage);
+	const editPage = pageToUpdate => {
+		const copyPages = cloneDeep(pages);
+		const updatedPage = cloneDeep(pageToUpdate);
 
-		const copyList = cloneDeep(pages).slice();
-		copyList[index].label = copyUpdatedPage.label;
-		copyList[index].type = copyUpdatedPage.type;
-		copyList[index].isRequired = copyUpdatedPage.isRequired;
-		copyList[index].options = copyUpdatedPage.options;
-		copyList[index].image = copyUpdatedPage.image;
+		const newQuestion = (copyPages[selectedIndex] = {
+			text: updatedPage.text,
+			type: updatedPage.type,
+			options: updatedPage.options,
+			image: updatedPage.image
+		});
 
-		setPages(copyList);
+		setPages(copyPages);
+
+		submitEdit(newQuestion, selectedIndex + 1);
+	};
+
+	const onDragEnd = result => {
+		const reorder = (list, startIndex, endIndex) => {
+			const result = Array.from(list);
+			const [removed] = result.splice(startIndex, 1);
+			result.splice(endIndex, 0, removed);
+			return result;
+		};
+
+		if (result.destination && result.destination.index !== result.source.index) {
+			const copyPages = reorder(pages, result.source.index, result.destination.index);
+
+			const currentPage = copyPages[result.destination.index];
+			const newPages = copyPages.map((v, index) => ({ ...v, arrange: index + 1 }));
+
+			if (selectedIndex === result.source.index) setSelectedIndex(result.destination.index);
+			setPages(newPages);
+
+			submitEdit(currentPage, result.source.index + 1, result.destination.index + 1);
+		}
 	};
 
 	return (
-		<>
-			<Row className='page_creator mt-4'>
+		<Row className='page_creator mt-4'>
+			<DragDropContext onDragEnd={onDragEnd}>
 				<List
 					pages={pages}
-					addPage={addPage}
 					handleBlockEditor={handleBlockEditor}
 					isBlockEditorOpen={isBlockEditorOpen}
 					selectedPage={selectedPage}
-					duplicatePage={duplicatePage}
-				/>
-
-				<Editor
-					isBlockEditorOpen={isBlockEditorOpen}
-					selectedPage={selectedPage}
+					selectedIndex={selectedIndex}
+					addPage={addPage}
 					removePage={removePage}
-					submitChanges={submitChanges}
-					cancelChanges={cancelChanges}
 				/>
-			</Row>
-		</>
+			</DragDropContext>
+
+			<Editor
+				pages={pages}
+				isBlockEditorOpen={isBlockEditorOpen}
+				selectedPage={selectedPage}
+				selectedIndex={selectedIndex}
+				removePage={removePage}
+				submitChanges={submitChanges}
+				cancelChanges={cancelChanges}
+			/>
+		</Row>
 	);
 }

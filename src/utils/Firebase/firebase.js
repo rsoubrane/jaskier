@@ -19,4 +19,4 @@ app.initializeApp(config);
 const auth = app.auth();
 const db = app.firestore();
 
-export { auth, db };
+export { app, auth, db };

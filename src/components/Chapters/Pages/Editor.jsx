@@ -12,6 +12,9 @@ import Option from "./Option";
 export default function PageEditor(props) {
 	const isBlockEditorOpen = props.isBlockEditorOpen;
 	const selectedPage = props.selectedPage;
+	console.log("selectedPage: ", selectedPage);
+	const selectedIndex = props.selectedIndex;
+	console.log("selectedIndex: ", selectedIndex);
 
 	const types = ["Choix simple", "Choix multiple", "Vrai/Faux", "Liste déroulante"];
 
@@ -36,7 +39,7 @@ export default function PageEditor(props) {
 	useEffect(() => {
 		if (props.selectedPage.id !== pageId) {
 			setPageId(props.selectedPage.id);
-			setPageText(props.selectedPage.label);
+			setPageText(props.selectedPage.text);
 			setPageType(types[props.selectedPage.type - 1]);
 			setPageTypeId(types[props.selectedPage.type - 1]);
 			setPageOptions(props.selectedPage.options);
@@ -44,7 +47,7 @@ export default function PageEditor(props) {
 		}
 	}, [
 		props.selectedPage.id,
-		props.selectedPage.label,
+		props.selectedPage.text,
 		props.selectedPage.image,
 		props.selectedPage.type,
 		props.selectedPage.options,
@@ -52,7 +55,7 @@ export default function PageEditor(props) {
 		pageId
 	]);
 
-	const handleChangeLabel = e => {
+	const handleChangeText = e => {
 		setPageText(e.target.value);
 	};
 
@@ -62,17 +65,17 @@ export default function PageEditor(props) {
 		if (pageType !== option.label) {
 			if (pageType === "Vrai/Faux") {
 				copyOptions = [
-					{ id: 1, option: "Choix 1" },
-					{ id: 2, option: "Choix 2" },
-					{ id: 3, option: "Choix 3" }
+					{ id: 1, text: "Choix 1" },
+					{ id: 2, text: "Choix 2" },
+					{ id: 3, text: "Choix 3" }
 				];
 			}
 			setPageType(option.label);
 			setPageTypeId(option.id);
 			if (option.label === "Vrai/Faux") {
 				copyOptions = [
-					{ id: 1, option: "Vrai" },
-					{ id: 2, option: "Faux" }
+					{ id: 1, text: "Vrai" },
+					{ id: 2, text: "Faux" }
 				];
 			}
 		}
@@ -86,6 +89,33 @@ export default function PageEditor(props) {
 		let value = e.target.value;
 		const copyOptions = cloneDeep(pageOptions);
 		copyOptions[id].option = value;
+		setPageOptions(copyOptions);
+	};
+
+	const addOption = indexOption => {
+		const copyOptions = cloneDeep(pageOptions).slice();
+		const newOption = {
+			id: copyOptions.length + 1,
+			text: "Nouvelle option ..."
+		};
+		copyOptions.splice(indexOption + 1, 0, newOption);
+
+		setPageOptions(copyOptions);
+	};
+
+	const duplicateOption = (optionToDuplicate, indexOption) => {
+		const copyOptions = cloneDeep(pageOptions).slice();
+
+		optionToDuplicate.id = copyOptions.length + 1;
+		copyOptions.splice(indexOption + 1, 0, optionToDuplicate);
+
+		setPageOptions(copyOptions);
+	};
+
+	const removeOption = indexOption => {
+		const copyOptions = cloneDeep(pageOptions);
+		copyOptions.splice(indexOption, 1);
+
 		setPageOptions(copyOptions);
 	};
 
@@ -142,33 +172,6 @@ export default function PageEditor(props) {
 		}
 	};
 
-	const addOption = indexOption => {
-		const copyOptions = cloneDeep(pageOptions).slice();
-		const newOption = {
-			id: copyOptions.length + 1,
-			option: "Nouvelle option ..."
-		};
-		copyOptions.splice(indexOption + 1, 0, newOption);
-
-		setPageOptions(copyOptions);
-	};
-
-	const duplicateOption = (optionToDuplicate, indexOption) => {
-		const copyOptions = cloneDeep(pageOptions).slice();
-
-		optionToDuplicate.id = copyOptions.length + 1;
-		copyOptions.splice(indexOption + 1, 0, optionToDuplicate);
-
-		setPageOptions(copyOptions);
-	};
-
-	const removeOption = indexOption => {
-		const copyOptions = cloneDeep(pageOptions);
-		copyOptions.splice(indexOption, 1);
-
-		setPageOptions(copyOptions);
-	};
-
 	const toggleConfirmation = (functionToToggle, functionParam) => {
 		if (window.confirm("Voulez-vous vraiment supprimer la page ?")) {
 			functionToToggle(functionParam);
@@ -177,7 +180,7 @@ export default function PageEditor(props) {
 
 	return (
 		<DragDropContext onDragEnd={onDragEnd}>
-			<Col xs='12' lg='6' className={`mb-5 creator_edit ${!isBlockEditorOpen ? "open" : null}`}>
+			<Col lg='6' className={`mb-5 creator_edit ${!isBlockEditorOpen ? "open" : null}`}>
 				{pageOptions ? (
 					<form onSubmit={() => submitChanges()}>
 						<Card className={`bg-secondary shadow card_creator_edit ${!isBlockEditorOpen ? "open" : null}`}>
@@ -192,7 +195,7 @@ export default function PageEditor(props) {
 														label='Type de page : '
 														id='type'
 														name='type'
-														value={pageType}
+														value={types[pageTypeId - 1]}
 														options={options}
 														change={handleChangeType}
 														removeImage={removeImage}
@@ -207,7 +210,7 @@ export default function PageEditor(props) {
 												rows={2}
 												maxlength={250}
 												value={pageText}
-												change={handleChangeLabel}
+												change={handleChangeText}
 												error={errors ? errors["name"] : false}
 											/>
 
@@ -286,7 +289,7 @@ export default function PageEditor(props) {
 											color='danger'
 											size='md'
 											className='ml-0 my-2'
-											onClick={() => cancelChanges(selectedPage.id)}>
+											onClick={() => cancelChanges(selectedIndex)}>
 											Annuler modification
 										</Button>
 									</Col>
@@ -294,7 +297,7 @@ export default function PageEditor(props) {
 										<Button
 											color='danger'
 											size='sm'
-											onClick={() => toggleConfirmation(removePage, selectedPage.id)}>
+											onClick={() => toggleConfirmation(removePage, selectedIndex)}>
 											Supprimer la page
 										</Button>
 									</Col>

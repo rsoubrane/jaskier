@@ -1,8 +1,8 @@
 import React from "react";
 
 //Assets
-import LogoFD from "../../../assets/img/free/Logo FD2.png";
-import BG from "../../../assets/img/free/bg-end-answer.jpg";
+import LogoFD from "../../assets/img/logo.png";
+import BG from "../../assets/img/bg-campaign.png";
 //Utils
 import { Container } from "reactstrap";
 
