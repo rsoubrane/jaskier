@@ -20,7 +20,7 @@ import {
 import * as ROUTES from "../../constants/routes";
 
 //Services
-import { db } from "../../utils/Firebase/firebase";
+import { getUserStories } from "../../services/stories";
 
 const Navigation = () => {
 	const [stories, setStories] = useState([]);
@@ -29,24 +29,16 @@ const Navigation = () => {
 	const toggle = () => setIsOpen(!isOpen);
 
 	useEffect(() => {
-		getStories();
-	}, []);
-
-	const getStories = async () => {
-		const stories = [];
-		await db
-			.collection("stories")
-			.where("status", "==", 1)
-			.where("user_created", "==", "romain")
-			.get()
-			.then(querySnapshot => {
-				querySnapshot.docs.forEach(doc => {
-					stories.push(doc.data());
-				});
+		async function fetchData() {
+			try {
+				const stories = await getUserStories();
 				setStories(stories);
-			});
-		return stories;
-	};
+			} catch (error) {
+				console.log(error);
+			}
+		}
+		fetchData();
+	}, []);
 
 	return (
 		<Navbar color='light' light expand='md'>
@@ -86,9 +78,9 @@ const Navigation = () => {
 						<DropdownMenu right>
 							{stories
 								? stories.map(story => (
-										<DropdownItem key={story.id}>
-											<NavLink tag={Link} to={`${ROUTES.STORY}/${story.slug}`}>
-												{story.name}
+										<DropdownItem key={story.story_id}>
+											<NavLink tag={Link} to={`${ROUTES.STORY}/${story.story_slug}`}>
+												{story.story_name}
 											</NavLink>
 										</DropdownItem>
 								  ))

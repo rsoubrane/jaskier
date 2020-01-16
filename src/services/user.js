@@ -69,15 +69,15 @@ export const logoutUser = () => {
 		});
 };
 
-export const getUserData = userId => {
+export const getUser = async userId => {
 	let user = {};
-	db.collection("users")
+	await db
+		.collection("users")
 		.where("userId", "==", userId)
 		.get()
 		.then(querySnapshot => {
 			querySnapshot.docs.forEach(doc => {
 				user = doc.data();
-				console.log("user: ", user);
 			});
 		});
 	return user;

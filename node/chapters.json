@@ -1,160 +1,43 @@
 {
 	"chapters": {
-		"HrEBYkoVcTm3z84i9fZ2": {
+		"591b1230-3663-11ea-b70d-af8064c70e2c": {
 			"chapter_name": "Chapitre 1",
 			"chapter_number": 1,
 			"chapter_slug": "chapitre-1",
 			"date_created": "2019-12-23T17:26:08+01:00",
 			"date_updated": "2019-12-23T17:26:08+01:00",
-			"id": "HrEBYkoVcTm3z84i9fZ2",
+			"chapter_id": "591b1230-3663-11ea-b70d-af8064c70e2c",
 			"status": 1,
 			"story_name": "Batman",
 			"story_slug": "batman",
 			"user_created": "romain",
-			"user_updated": "theo",
-			"pages": [
-				{
-					"page_number": 1,
-					"id": 1,
-					"type": 1,
-					"image": "xxx",
-					"text": "Go to question 2",
-					"options": [
-						{ "id": 1, "text": "Comme-ca", "redirectTo": 2 },
-						{ "id": 2, "text": "Par-ici", "redirectTo": 2 }
-					]
-				},
-				{
-					"page_number": 2,
-					"id": 2,
-					"type": 2,
-					"image": "xxx",
-					"text": "A merchant offers you to take one of its items",
-					"options": [
-						{ "id": 1, "text": "Walk away !", "redirectTo": 3 },
-						{
-							"id": 2,
-							"text": "Take the wooden sword !",
-							"getItem": [{ "item": "wooden_sword", "quantity": "1" }],
-							"redirectTo": 4
-						},
-						{ "id": 3, "text": "Option 3" },
-						{
-							"id": 4,
-							"text": "Take the healing potion and the shield",
-							"getItem": [
-								{ "item": "healing_potion", "quantity": "1" },
-								{ "item": "wooden_shield", "quantity": "1" }
-							],
-							"redirectTo": 5
-						}
-					]
-				}
-			]
+			"user_updated": "theo"
 		},
-		"SpdTEU8F9J4ZSOd3bzWv": {
+		"71b0dd20-3663-11ea-a40f-dfff64219683": {
 			"chapter_name": "Chapitre 2",
 			"chapter_number": 2,
 			"chapter_slug": "chapitre-2",
 			"date_created": "2019-12-23T17:26:08+01:00",
 			"date_updated": "2019-12-23T17:26:08+01:00",
-			"id": "SpdTEU8F9J4ZSOd3bzWv",
+			"chapter_id": "71b0dd20-3663-11ea-a40f-dfff64219683",
 			"status": 8,
 			"story_name": "Batman",
 			"story_slug": "batman",
 			"user_created": "romain",
-			"user_updated": "theo",
-			"pages": [
-				{
-					"page_number": 1,
-					"id": 1,
-					"type": 1,
-					"image": "xxx",
-					"text": "Go to question 2",
-					"options": [
-						{ "id": 1, "text": "Comme-ca", "redirectTo": 2 },
-						{ "id": 2, "text": "Par-ici", "redirectTo": 2 }
-					]
-				},
-				{
-					"page_number": 2,
-					"id": 2,
-					"type": 2,
-					"image": "xxx",
-					"text": "A merchant offers you to take one of its items",
-					"options": [
-						{ "id": 1, "text": "Walk away !", "redirectTo": 3 },
-						{
-							"id": 2,
-							"text": "Take the wooden sword !",
-							"getItem": [{ "item": "wooden_sword", "quantity": "1" }],
-							"redirectTo": 4
-						},
-						{ "id": 3, "text": "Option 3" },
-						{
-							"id": 4,
-							"text": "Take the healing potion and the shield",
-							"getItem": [
-								{ "item": "healing_potion", "quantity": "1" },
-								{ "item": "wooden_shield", "quantity": "1" }
-							],
-							"redirectTo": 5
-						}
-					]
-				}
-			]
+			"user_updated": "theo"
 		},
-		"Z8UuLQtKV90OxYKa58J1": {
+		"67d31390-3663-11ea-ba8a-9185aa9d4294": {
 			"chapter_name": "Chapitre 3",
 			"chapter_number": 3,
 			"chapter_slug": "chapitre-3",
 			"date_created": "2019-12-23T17:26:08+01:00",
 			"date_updated": "2019-12-23T17:26:08+01:00",
-			"id": "Z8UuLQtKV90OxYKa58J1",
+			"chapter_id": "67d31390-3663-11ea-ba8a-9185aa9d4294",
 			"status": 1,
 			"story_name": "Batman",
 			"story_slug": "batman",
 			"user_created": "romain",
-			"user_updated": "romain",
-			"pages": [
-				{
-					"page_number": 1,
-					"id": 1,
-					"type": 1,
-					"image": "xxx",
-					"text": "Go to question 2",
-					"options": [
-						{ "id": 1, "text": "Comme-ca", "redirectTo": 2 },
-						{ "id": 2, "text": "Par-ici", "redirectTo": 2 }
-					]
-				},
-				{
-					"page_number": 2,
-					"id": 2,
-					"type": 2,
-					"image": "xxx",
-					"text": "A merchant offers you to take one of its items",
-					"options": [
-						{ "id": 1, "text": "Walk away !", "redirectTo": 3 },
-						{
-							"id": 2,
-							"text": "Take the wooden sword !",
-							"getItem": [{ "item": "wooden_sword", "quantity": "1" }],
-							"redirectTo": 4
-						},
-						{ "id": 3, "text": "Option 3" },
-						{
-							"id": 4,
-							"text": "Take the healing potion and the shield",
-							"getItem": [
-								{ "item": "healing_potion", "quantity": "1" },
-								{ "item": "wooden_shield", "quantity": "1" }
-							],
-							"redirectTo": 5
-						}
-					]
-				}
-			]
+			"user_updated": "romain"
 		}
 	}
 }

@@ -16,7 +16,7 @@ export default function StoryChapters(props) {
 
 			{chapters
 				? chapters.map(chapter => (
-						<Col key={chapter.id} xs={12} lg={4} className='mb-4 px-lg-4'>
+						<Col key={chapter.chapter_id} xs={12} lg={4} className='mb-4 px-lg-4'>
 							<Link to={`/admin/story/${slug}/chapter/${chapter.chapter_slug}`}>
 								{chapter.chapter_name}
 							</Link>

@@ -1,43 +1,95 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useInput } from "react";
 
 //Utils
 import { Button, Card, CardBody, FormGroup, Form, Container, Row, Col, CardFooter } from "reactstrap";
 import { Redirect } from "react-router-dom";
+import ReactDropzone from "react-dropzone";
 
 //Components
 import Header from "../../components/Headers/Header";
 import FormInput from "../../components/Forms/Form";
+import LoadingSpinner from "../../components/Loaders/LoadingSpinner";
+
+//Services
+import { addStory } from "../../services/stories";
 
 // Assets
 import bgDefault from "../../assets/img/bg-campaign.png";
 import profile from "../../assets/img/profile.png";
 
 export default function StoryAdd() {
-	const [user] = useState({ username: "rsoubrane" });
-	const [errors] = useState(false);
-	const [disableForm, setDisableForm] = useState(false);
+	const username = "romain";
+
+	const [story, setStory] = useState({});
 	const [redirect, setRedirect] = useState(false);
+	const [disabledForm, setDisabledForm] = useState(true);
+	const [loading, setLoading] = useState(false);
+	const [errors] = useState(false);
 
-	const handleChange = e => {};
+	const handleChange = e => {
+		let slug = "";
+		if (e.currentTarget.name === "name") {
+			slug = e.currentTarget.value
+				.toLowerCase()
+				.replace(/ /g, "-")
+				.replace(/[^\w-]+/g, "");
+		} else if (story.slug) slug = story.slug;
+		setStory({
+			...story,
+			[e.currentTarget.name]: e.currentTarget.value,
+			slug
+		});
+		if (story.name && story.description) setDisabledForm(false);
+	};
 
-	const submitStory = () => {
-		if (!disableForm) {
-			setDisableForm(true);
+	const onPreviewDrop = files => {
+		if (files.length) {
+			let reader = new FileReader();
+			reader.onload = e => {
+				setStory({
+					...story,
+					image: e.target.result
+				});
+			};
+			reader.readAsDataURL(files[0]);
+		} else {
+			alert("Veuillez insérer une Image");
+		}
+	};
+
+	const removeImage = () => {
+		setStory({
+			...story,
+			image: ""
+		});
+	};
+
+	const submitStory = async () => {
+		setLoading(true);
+		const newStory = {
+			name: story.name,
+			slug: story.slug,
+			image: story.image || "",
+			description: story.description
+		};
+		const res = await addStory(newStory, username);
+		if (res === "success") {
+			setLoading(false);
+			setRedirect(true);
 		}
 	};
 
 	const previewStyle = {
 		display: "block",
-		maxWidth: 300,
-		maxHeight: 200
+		width: "100%"
 	};
 
 	return (
 		<>
 			{redirect ? (
-				<Redirect to={"/"} />
+				<Redirect to={`/admin/story/${story.slug}`} />
 			) : (
-				<>
+				<LoadingSpinner isVisible={loading}>
 					<Header background={bgDefault} title='Ajouter un jeu' />
 					<Container fluid>
 						<Row>
@@ -54,7 +106,7 @@ export default function StoryAdd() {
 										<Row>
 											<Col>
 												<div className='text-center mt-8'>
-													<h3>{user.username}</h3>
+													<h3>{username}</h3>
 													<div className='h5 font-weight-300'>
 														<i className='ni location_pin mr-2' />
 														Créateur du jeu
@@ -100,23 +152,64 @@ export default function StoryAdd() {
 											<h6 className='heading-small text-muted mb-4'>Design du jeu</h6>
 											<div className='pl-lg-4'>
 												<Row>
-													<Col lg='4'>
+													<Col lg='5'>
 														<FormGroup>
 															<label
 																className='form-control-label'
 																htmlFor='input-username'>
 																Image du jeu
 															</label>
-															<img alt='Preview' src={bgDefault} style={previewStyle} />
+
+															{story.image ? (
+																<>
+																	<img
+																		alt='Preview'
+																		src={story.image}
+																		style={previewStyle}
+																	/>
+																	<Button color='danger' onClick={removeImage}>
+																		Supprimer l'image
+																	</Button>
+																</>
+															) : (
+																<img
+																	alt='Preview'
+																	src={bgDefault}
+																	style={previewStyle}
+																/>
+															)}
 														</FormGroup>
 													</Col>
-													<Col lg='8' md='12'>
+													<Col lg='7' md='12'>
 														<FormGroup>
 															<label
 																className='form-control-label'
 																htmlFor='input-username'>
 																Changer d'image
 															</label>
+															<ReactDropzone accept='image/*' onDrop={onPreviewDrop}>
+																{({ getRootProps, getInputProps }) => (
+																	<section className={"drop_csv"}>
+																		<div
+																			className={"drop_csv_enter"}
+																			{...getRootProps()}>
+																			<div className={"drop_csv_border"}>
+																				<input {...getInputProps()} />
+																				<span
+																					className={
+																						"fa fa-cloud-upload-alt"
+																					}></span>
+																				<strong>DRAG & DROP</strong>
+																				<Button
+																					className='btn btn-secondary btn-outlined'
+																					onClick={e => e.preventDefault()}>
+																					OU SELECTIONNER UNE IMAGE
+																				</Button>
+																			</div>
+																		</div>
+																	</section>
+																)}
+															</ReactDropzone>
 														</FormGroup>
 													</Col>
 												</Row>
@@ -125,18 +218,14 @@ export default function StoryAdd() {
 										<CardFooter className='bg-white border-0'>
 											<Row className='align-items-center'>
 												<Col className='text-right' xs='12'>
-													<Button
-														color='danger'
-														onClick={() => setRedirect(true)}
-														size='md'
-														disabled={disableForm}>
+													<Button color='danger' onClick={() => setRedirect(true)} size='md'>
 														Annuler
 													</Button>
 													<Button
 														color='primary'
+														disabled={disabledForm}
 														onClick={() => submitStory()}
-														size='md'
-														disabled={disableForm}>
+														size='md'>
 														Créer le jeu
 													</Button>
 												</Col>
@@ -147,7 +236,7 @@ export default function StoryAdd() {
 							</Col>
 						</Row>
 					</Container>
-				</>
+				</LoadingSpinner>
 			)}
 		</>
 	);

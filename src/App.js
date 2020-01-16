@@ -1,6 +1,6 @@
 import React from "react";
 
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 //Constants
 import * as ROUTES from "./constants/routes";
@@ -47,16 +47,18 @@ const App = () => (
 	<Router>
 		<div>
 			<Navigation />
-			<Route exact path={ROUTES.HOME} component={Home} />
-			<Route exact path={ROUTES.NEW_STORY} component={StoryAdd} />
-			<Route exact path={`${ROUTES.STORY}/:storySlug`} component={Story} />
-			<Route exact path={ROUTES.NEW_CHAPTER} component={ChapterAdd} />
-			<Route exact path={`${ROUTES.CHAPTER}/:chapterSlug`} component={Chapter} />
-			<Route exact path={`${ROUTES.GAME}/:storySlug`} component={Game} />
-			<AuthRoute exact path={ROUTES.SIGN_IN} component={SignIn} />
-			<AuthRoute exact path={ROUTES.SIGN_UP} component={SignUp} />
-			{/* <Route path={ROUTES.ADMIN} component={Admin} /> */}
-			<Route path={ROUTES.ACCOUNT} component={Account} />
+			<Switch>
+				<Route exact path={ROUTES.HOME} component={Home} />
+				<Route exact path={ROUTES.NEW_STORY} component={StoryAdd} />
+				<Route exact path={`${ROUTES.STORY}/:storySlug`} component={Story} />
+				<Route exact path={ROUTES.NEW_CHAPTER} component={ChapterAdd} />
+				<Route exact path={`${ROUTES.CHAPTER}/:chapterSlug`} component={Chapter} />
+				<Route exact path={`${ROUTES.GAME}/:storySlug`} component={Game} />
+				<AuthRoute exact path={ROUTES.SIGN_IN} component={SignIn} />
+				<AuthRoute exact path={ROUTES.SIGN_UP} component={SignUp} />
+				{/* <Route path={ROUTES.ADMIN} component={Admin} /> */}
+				<Route path={ROUTES.ACCOUNT} component={Account} />
+			</Switch>
 		</div>
 	</Router>
 );

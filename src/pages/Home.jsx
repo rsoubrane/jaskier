@@ -5,71 +5,57 @@ import { Container } from "reactstrap";
 import { Link } from "react-router-dom";
 
 //Firebase
-import { auth, db } from "../utils/Firebase/firebase";
+import { auth } from "../utils/Firebase/firebase";
+
+//Services
+import { getUser } from "../services/user";
+import { getStories } from "../services/stories";
+
+//Components
+import LoadingScreen from "../components/Loaders/LoadingScreen";
 
 export default function Home() {
 	const [user, setUser] = useState();
-	const [username, setUsername] = useState();
 	const [userId, setUserId] = useState();
 	const [stories, setStories] = useState([]);
+	const [loading, setLoading] = useState(true);
 
-	//ComponentDidMount
 	useEffect(() => {
 		auth.onAuthStateChanged(user => {
 			if (user) setUserId(user.uid);
 		});
 
-		const getUser = async () => {
-			let user = "";
-			await db
-				.collection("users")
-				.where("userId", "==", userId)
-				.get()
-				.then(querySnapshot => {
-					querySnapshot.docs.forEach(doc => {
-						user = doc.data();
-					});
-					setUser(user);
-					setUsername(user.username);
-				});
-		};
-
-		const getStories = async () => {
-			const stories = [];
-			await db
-				.collection("stories")
-				.where("status", "==", 1)
-				.get()
-				.then(querySnapshot => {
-					querySnapshot.docs.forEach(doc => {
-						stories.push(doc.data());
-					});
-					setStories(stories);
-				});
-			return stories;
-		};
-
-		if (userId) getUser();
-		getStories();
+		async function fetchData() {
+			try {
+				const user = await getUser(userId);
+				const stories = await getStories();
+				setUser(user);
+				setStories(stories);
+				if (user && stories) setLoading(false);
+			} catch (error) {
+				console.log(error);
+			}
+		}
+		fetchData();
 	}, [userId]);
 
 	return (
-		<Container fluid>
-			<h1>Home Page</h1>
-			<hr />
+		<LoadingScreen isVisible={loading}>
+			{user && stories ? (
+				<Container fluid>
+					<h1>Home Page</h1>
+					<hr />
 
-			{console.log("user: ", user)}
+					<h2>Welcome {user.username}</h2>
 
-			{user ? <h2>Welcome {user.username}</h2> : null}
-
-			{stories
-				? stories.map(story => (
+					{stories.map(story => (
 						<div key={story.id}>
 							<Link to={`/game/${story.slug}`}>{story.name}</Link>
 							<br />
 						</div>
-				  ))
-				: null}
-		</Container>
+					))}
+				</Container>
+			) : null}
+		</LoadingScreen>
 	);
 }

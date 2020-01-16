@@ -18,7 +18,7 @@ export default function Page(props) {
 	const removePage = props.removePage;
 
 	const types = ["Choix simple", "Choix multiple", "Vrai/Faux", "Liste déroulante"];
-	const questionType = types[pageDetails.type - 1];
+	const questionType = types[pageDetails.page_type - 1];
 
 	return (
 		<Draggable draggableId={(props.index + 1).toString()} index={props.index}>
@@ -29,14 +29,14 @@ export default function Page(props) {
 					ref={provided.innerRef}>
 					<Col xs='10' className='page_details' onClick={() => handleBlockEditor(props.index)}>
 						<span className='font-weight-bold'>{props.index + 1} :</span>
-						<span className='page_label'> {pageDetails.text}</span>
+						<span className='page_label'> {pageDetails.page_text}</span>
 
 						<div className='page_bottom text-center'>
 							<div className='page_type'>{questionType}</div>
 
-							<div className='page_options'>{pageDetails.options.length} options</div>
+							<div className='page_options'>{pageDetails.page_options.length} options</div>
 
-							{pageDetails.image ? <div className='page_image'>Image</div> : null}
+							{pageDetails.page_image ? <div className='page_image'>Image</div> : null}
 						</div>
 					</Col>
 

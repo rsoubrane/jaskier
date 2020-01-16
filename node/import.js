@@ -27,7 +27,6 @@ admin.initializeApp({
 	credential: admin.credential.cert(serviceAccount),
 	databaseURL: "https://jaskier.firebaseio.com"
 });
-
 const db = admin.firestore();
 db.settings({ timestampsInSnapshots: true });
 

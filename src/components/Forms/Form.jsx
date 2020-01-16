@@ -186,7 +186,7 @@ Form.Image = class ImageSelect extends Component {
 							style={{ display: "none" }}
 						/>
 
-						{this.props.pageImage ? (
+						{this.props.image ? (
 							<>
 								<Button color='danger' size='sm' onClick={this.props.removeImage}>
 									Supprimer l'image

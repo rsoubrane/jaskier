@@ -12,18 +12,17 @@ import Option from "./Option";
 export default function PageEditor(props) {
 	const isBlockEditorOpen = props.isBlockEditorOpen;
 	const selectedPage = props.selectedPage;
-	console.log("selectedPage: ", selectedPage);
 	const selectedIndex = props.selectedIndex;
-	console.log("selectedIndex: ", selectedIndex);
 
 	const types = ["Choix simple", "Choix multiple", "Vrai/Faux", "Liste déroulante"];
 
-	const [pageId, setPageId] = useState(selectedPage.id);
-	const [pageText, setPageText] = useState(selectedPage.text);
-	const [pageType, setPageType] = useState(types[selectedPage.type - 1]);
-	const [pageTypeId, setPageTypeId] = useState(selectedPage.type);
-	const [pageOptions, setPageOptions] = useState(selectedPage.options);
-	const [pageImage, setPageImage] = useState(selectedPage.image);
+	const [pageId, setPageId] = useState(selectedPage.page_id);
+	const [pageNumber, setPageNumber] = useState(selectedPage.page_number);
+	const [pageText, setPageText] = useState(selectedPage.page_text);
+	const [pageType, setPageType] = useState(types[selectedPage.page_type - 1]);
+	const [pageTypeId, setPageTypeId] = useState(selectedPage.page_type);
+	const [pageOptions, setPageOptions] = useState(selectedPage.page_options);
+	const [pageImage, setPageImage] = useState(selectedPage.page_image);
 
 	const options = [
 		{ id: 1, icon: "ni ni-bullet-list-67", label: "Choix simple" },
@@ -37,22 +36,24 @@ export default function PageEditor(props) {
 	const removePage = props.removePage;
 
 	useEffect(() => {
-		if (props.selectedPage.id !== pageId) {
-			setPageId(props.selectedPage.id);
-			setPageText(props.selectedPage.text);
-			setPageType(types[props.selectedPage.type - 1]);
-			setPageTypeId(types[props.selectedPage.type - 1]);
-			setPageOptions(props.selectedPage.options);
-			setPageImage(props.selectedPage.image);
+		if (props.selectedPage.page_number !== pageNumber) {
+			setPageId(props.selectedPage.page_id);
+			setPageNumber(props.selectedPage.page_number);
+			setPageText(props.selectedPage.page_text);
+			setPageType(types[props.selectedPage.page_type - 1]);
+			setPageTypeId(props.selectedPage.page_type);
+			setPageOptions(props.selectedPage.page_options);
+			setPageImage(props.selectedPage.page_image);
 		}
 	}, [
-		props.selectedPage.id,
-		props.selectedPage.text,
-		props.selectedPage.image,
-		props.selectedPage.type,
-		props.selectedPage.options,
+		props.selectedPage.page_id,
+		props.selectedPage.page_number,
+		props.selectedPage.page_text,
+		props.selectedPage.page_image,
+		props.selectedPage.page_type,
+		props.selectedPage.page_options,
 		types,
-		pageId
+		pageNumber
 	]);
 
 	const handleChangeText = e => {
@@ -142,21 +143,21 @@ export default function PageEditor(props) {
 	const submitChanges = () => {
 		props.submitChanges(
 			{
-				id: pageId,
-				text: pageText,
-				type: pageTypeId,
-				image: pageImage,
-				options: pageOptions
+				page_id: pageId,
+				page_text: pageText,
+				page_type: pageTypeId,
+				page_image: pageImage,
+				page_options: pageOptions
 			},
 			pageId
 		);
 	};
 
 	const revertValues = () => {
-		setPageText(selectedPage.text);
-		setPageType(types[selectedPage.type - 1]);
-		setPageOptions(selectedPage.options);
-		setPageImage(selectedPage.image);
+		setPageText(selectedPage.page_text);
+		setPageType(types[selectedPage.page_type - 1]);
+		setPageOptions(selectedPage.page_options);
+		setPageImage(selectedPage.page_image);
 	};
 
 	const onDragEnd = result => {

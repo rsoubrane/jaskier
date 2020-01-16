@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 //Utils
 import { Row } from "reactstrap";
@@ -10,11 +10,11 @@ import List from "../../components/Chapters/Pages/List";
 import Editor from "../../components/Chapters/Pages/Editor";
 
 //Utils
-import { submitAdd, submitEdit, submitRemove } from "../../services/data";
+import { submitAddPage, submitEditPage, submitRemovePage } from "../../services/data";
 
 export default function ChaptersDetails(props) {
 	const [chapter] = useState(props.chapter);
-	const [pages, setPages] = useState(chapter.pages);
+	const [pages, setPages] = useState(props.pages);
 	const [selectedPage, setSelectedPage] = useState(pages[0]);
 	const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -45,41 +45,44 @@ export default function ChaptersDetails(props) {
 		let newPage = "";
 		if (pageToDuplicate) {
 			newPage = {
-				id: pages.length + 1,
-				text: pageToDuplicate.text,
-				type: pageToDuplicate.type,
-				options: pageToDuplicate.options,
-				isRequired: pageToDuplicate.isRequired
+				page_id: pages.length + 1,
+				page_number: indexPage + 1,
+				page_text: pageToDuplicate.page_text,
+				page_type: pageToDuplicate.page_type,
+				page_options: pageToDuplicate.page_options
 			};
 		} else {
 			newPage = {
-				id: pages.length + 1,
-				text: "Votre nouvelle page :",
-				image: "",
-				options: [
+				page_id: pages.length + 1,
+				page_number: indexPage + 1,
+				page_text: "Votre nouvelle page :",
+				page_image: "",
+				page_options: [
 					{ id: 1, text: "Choix 1" },
 					{ id: 2, text: "Choix 2" },
 					{ id: 3, text: "Choix 3" }
 				],
-				type: 1,
-				isRequired: true
+				page_type: 1
 			};
 		}
+		console.log("newPage: ", newPage);
 		copyPages.splice(indexPage + 1, 0, newPage);
-		copyPages.map((v, index) => ({ ...v, order: index + 1 }));
+		copyPages.map((v, index) => ({ ...v, page_number: index + 1 }));
 		setPages(copyPages);
 
-		submitAdd(newPage, indexPage);
+		submitAddPage(chapter, newPage, indexPage);
 	};
 
 	const removePage = indexPage => {
 		const copyPages = cloneDeep(pages);
-		if (indexPage === 0) setSelectedIndex(0);
-		if (indexPage === pages.length - 1) setSelectedIndex(pages.length - 2);
 		copyPages.splice(indexPage, 1);
-		setSelectedPage(copyPages[selectedIndex]);
+
+		if (indexPage === 0) setSelectedIndex(0);
+		if (indexPage === copyPages.length - 1 && selectedIndex === copyPages.length)
+			setSelectedIndex(copyPages.length - 2);
 		setPages(copyPages);
-		submitRemove(indexPage);
+		setSelectedPage(pages[selectedIndex]);
+		submitRemovePage(indexPage);
 	};
 
 	const submitChanges = (updatedPage, idPage) => {
@@ -94,15 +97,15 @@ export default function ChaptersDetails(props) {
 		const updatedPage = cloneDeep(pageToUpdate);
 
 		const newQuestion = (copyPages[selectedIndex] = {
-			text: updatedPage.text,
-			type: updatedPage.type,
-			options: updatedPage.options,
-			image: updatedPage.image
+			page_text: updatedPage.page_text,
+			page_type: updatedPage.page_type,
+			page_options: updatedPage.page_options,
+			page_image: updatedPage.page_image
 		});
 
 		setPages(copyPages);
 
-		submitEdit(newQuestion, selectedIndex + 1);
+		submitEditPage(newQuestion, selectedIndex + 1);
 	};
 
 	const onDragEnd = result => {
@@ -115,14 +118,18 @@ export default function ChaptersDetails(props) {
 
 		if (result.destination && result.destination.index !== result.source.index) {
 			const copyPages = reorder(pages, result.source.index, result.destination.index);
-
 			const currentPage = copyPages[result.destination.index];
-			const newPages = copyPages.map((v, index) => ({ ...v, arrange: index + 1 }));
+			const newPages = copyPages.map((v, index) => ({ ...v, page_number: index + 1 }));
 
-			if (selectedIndex === result.source.index) setSelectedIndex(result.destination.index);
+			if (selectedIndex === result.source.index) {
+				if (copyPages.length <= 2 && selectedIndex === 0) setSelectedIndex(1);
+				else if (copyPages.length <= 2 && selectedIndex === 1) setSelectedIndex(0);
+				else setSelectedIndex(result.destination.index);
+			}
+			console.log("newPages: ", newPages);
 			setPages(newPages);
 
-			submitEdit(currentPage, result.source.index + 1, result.destination.index + 1);
+			submitEditPage(currentPage, result.source.index + 1, result.destination.index + 1);
 		}
 	};
 

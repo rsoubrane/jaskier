@@ -1,0 +1,53 @@
+{
+	"pages": {
+		"4a251c2a-3664-11ea-aec2-2e728ce88125": {
+			"page_id": "4a251c2a-3664-11ea-aec2-2e728ce88125",
+			"chapter_id": "591b1230-3663-11ea-b70d-af8064c70e2c",
+			"status": 1,
+			"user_created": "romain",
+			"user_updated": "theo",
+			"date_created": "2019-12-23T17:26:08+01:00",
+			"date_updated": "2019-12-23T17:26:08+01:00",
+			"page_number": 1,
+			"page_type": 1,
+			"page_image": "xxx",
+			"page_text": "Go to question 2",
+			"page_options": [
+				{ "id": 1, "text": "Comme-ca", "redirectTo": 2 },
+				{ "id": 2, "text": "Par-ici", "redirectTo": 2 }
+			]
+		},
+		"d6ab3882-3664-11ea-978f-2e728ce88125": {
+			"page_id": "d6ab3882-3664-11ea-978f-2e728ce88125",
+			"chapter_id": "591b1230-3663-11ea-b70d-af8064c70e2c",
+			"status": 1,
+			"user_created": "romain",
+			"user_updated": "theo",
+			"date_created": "2019-12-23T17:26:08+01:00",
+			"date_updated": "2019-12-23T17:26:08+01:00",
+			"page_number": 2,
+			"page_type": 1,
+			"page_image": "xxx",
+			"page_text": "A merchant offers you to take one of its items",
+			"page_options": [
+				{ "id": 1, "text": "Walk away !", "redirectTo": 3 },
+				{
+					"id": 2,
+					"text": "Take the wooden sword !",
+					"getItem": [{ "item": "wooden_sword", "quantity": "1" }],
+					"redirectTo": 4
+				},
+				{ "id": 3, "text": "Option 3" },
+				{
+					"id": 4,
+					"text": "Take the healing potion and the shield",
+					"getItem": [
+						{ "item": "healing_potion", "quantity": "1" },
+						{ "item": "wooden_shield", "quantity": "1" }
+					],
+					"redirectTo": 5
+				}
+			]
+		}
+	}
+}
