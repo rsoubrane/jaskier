@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useInput } from "react";
+import React, { useState } from "react";
 
 //Utils
 import { Button, Card, CardBody, FormGroup, Form, Container, Row, Col, CardFooter } from "reactstrap";
@@ -15,7 +15,6 @@ import { addStory } from "../../services/stories";
 
 // Assets
 import bgDefault from "../../assets/img/bg-campaign.png";
-import profile from "../../assets/img/profile.png";
 
 export default function StoryAdd() {
 	const username = "romain";
@@ -91,33 +90,9 @@ export default function StoryAdd() {
 			) : (
 				<LoadingSpinner isVisible={loading}>
 					<Header background={bgDefault} title='Ajouter un jeu' />
-					<Container fluid>
+					<Container fluid className='mt--7'>
 						<Row>
-							<Col className='order-xl-2 mb-5 mb-xl-0' xl='4' md='12'>
-								<Card className='card-profile shadow'>
-									<Row className='justify-content-center'>
-										<Col className='order-lg-2' lg='3'>
-											<div className='card-profile-image'>
-												<img alt='...' className='rounded-circle' src={profile} />
-											</div>
-										</Col>
-									</Row>
-									<CardBody className='pt-0 pt-md-4'>
-										<Row>
-											<Col>
-												<div className='text-center mt-8'>
-													<h3>{username}</h3>
-													<div className='h5 font-weight-300'>
-														<i className='ni location_pin mr-2' />
-														Créateur du jeu
-													</div>
-												</div>
-											</Col>
-										</Row>
-									</CardBody>
-								</Card>
-							</Col>
-							<Col className='order-xl-1' xl='8'>
+							<Col>
 								<Form>
 									<Card className='bg-secondary shadow'>
 										<CardBody>
@@ -150,70 +125,60 @@ export default function StoryAdd() {
 											</div>
 											<hr className='my-4' />
 											<h6 className='heading-small text-muted mb-4'>Design du jeu</h6>
-											<div className='pl-lg-4'>
-												<Row>
-													<Col lg='5'>
-														<FormGroup>
-															<label
-																className='form-control-label'
-																htmlFor='input-username'>
-																Image du jeu
-															</label>
+											<Row>
+												<Col lg='5'>
+													<FormGroup className='pl-lg-4'>
+														<label className='form-control-label' htmlFor='input-username'>
+															Image du jeu
+														</label>
 
-															{story.image ? (
-																<>
-																	<img
-																		alt='Preview'
-																		src={story.image}
-																		style={previewStyle}
-																	/>
-																	<Button color='danger' onClick={removeImage}>
-																		Supprimer l'image
-																	</Button>
-																</>
-															) : (
+														{story.image ? (
+															<>
 																<img
 																	alt='Preview'
-																	src={bgDefault}
+																	src={story.image}
 																	style={previewStyle}
 																/>
-															)}
-														</FormGroup>
-													</Col>
-													<Col lg='7' md='12'>
-														<FormGroup>
-															<label
-																className='form-control-label'
-																htmlFor='input-username'>
-																Changer d'image
-															</label>
-															<ReactDropzone accept='image/*' onDrop={onPreviewDrop}>
-																{({ getRootProps, getInputProps }) => (
-																	<section className={"drop_csv"}>
-																		<div
-																			className={"drop_csv_enter"}
-																			{...getRootProps()}>
-																			<div className={"drop_csv_border"}>
-																				<input {...getInputProps()} />
-																				<span
-																					className={
-																						"fa fa-cloud-upload-alt"
-																					}></span>
-																				<strong>DRAG & DROP</strong>
-																				<Button
-																					className='btn btn-secondary btn-outlined'
-																					onClick={e => e.preventDefault()}>
-																					OU SELECTIONNER UNE IMAGE
-																				</Button>
-																			</div>
+																<Button color='danger' onClick={removeImage}>
+																	Supprimer l'image
+																</Button>
+															</>
+														) : (
+															<img alt='Preview' src={bgDefault} style={previewStyle} />
+														)}
+													</FormGroup>
+												</Col>
+												<Col lg='7' md='12'>
+													<FormGroup>
+														<label className='form-control-label' htmlFor='input-username'>
+															Changer d'image
+														</label>
+														<ReactDropzone accept='image/*' onDrop={onPreviewDrop}>
+															{({ getRootProps, getInputProps }) => (
+																<section className={"drop_csv"}>
+																	<div
+																		className={"drop_csv_enter"}
+																		{...getRootProps()}>
+																		<div className={"drop_csv_border"}>
+																			<input {...getInputProps()} />
+																			<span
+																				className={
+																					"fa fa-cloud-upload-alt"
+																				}></span>
+																			<strong>DRAG & DROP</strong>
+																			<Button
+																				className='btn btn-secondary btn-outlined'
+																				onClick={e => e.preventDefault()}>
+																				OU SELECTIONNER UNE IMAGE
+																			</Button>
 																		</div>
-																	</section>
-																)}
-															</ReactDropzone>
-														</FormGroup>
-													</Col>
-												</Row>
-											</div>
+																	</div>
+																</section>
+															)}
+														</ReactDropzone>
+													</FormGroup>
+												</Col>
+											</Row>
 										</CardBody>
 										<CardFooter className='bg-white border-0'>
 											<Row className='align-items-center'>

@@ -4,63 +4,6 @@ import uuid from "uuid/v1";
 //Constants
 import * as ROUTES from "../constants/routes";
 
-export const getStories = async () => {
-	const stories = [];
-	await db
-		.collection("stories")
-		.where("status", "==", 1)
-		.get()
-		.then(querySnapshot => {
-			querySnapshot.docs.forEach(doc => {
-				stories.push(doc.data());
-			});
-		});
-	return stories;
-};
-
-export const getUserStories = async () => {
-	const stories = [];
-	await db
-		.collection("stories")
-		.where("status", "==", 1)
-		.where("user_created", "==", "romain")
-		.get()
-		.then(querySnapshot => {
-			querySnapshot.docs.forEach(doc => {
-				stories.push(doc.data());
-			});
-		});
-	return stories;
-};
-
-export const getChapters = async storySlug => {
-	let chapters = [];
-	await db
-		.collection("chapters")
-		.where("story_slug", "==", storySlug)
-		.get()
-		.then(querySnapshot => {
-			querySnapshot.docs.forEach(doc => {
-				chapters.push(doc.data());
-			});
-		});
-	return chapters;
-};
-
-export const getChapter = async chapterSlug => {
-	let chapter = "";
-	await db
-		.collection("chapters")
-		.where("chapter_slug", "==", chapterSlug)
-		.get()
-		.then(querySnapshot => {
-			querySnapshot.docs.forEach(doc => {
-				chapter = doc.data();
-			});
-		});
-	return chapter;
-};
-
 export const getPages = async chapter => {
 	const pages = [];
 	await db

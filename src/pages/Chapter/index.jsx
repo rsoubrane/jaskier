@@ -15,7 +15,8 @@ import ChapterDetails from "./details";
 import ChapterSettings from "./settings";
 
 //Services
-import { getChapter, getPages } from "../../services/data";
+import { getChapter } from "../../services/chapters";
+import { getPages } from "../../services/data";
 
 // Assets
 import bgDefault from "../../assets/img/bg-campaign.png";
@@ -162,28 +163,20 @@ export default function Chapter(props) {
 										<Card className='shadow'>
 											<CardBody>
 												<TabContent activeTab={"tabs" + tabs}>
-													<TabPane tabId='tabs1'>
-														<p className='description'>EN COURS</p>
-													</TabPane>
+													<TabPane tabId='tabs1'>EN COURS</TabPane>
 													<TabPane tabId='tabs2'>
 														{chapter && pages ? (
 															<ChapterDetails chapter={chapter} pages={pages} />
 														) : null}
 													</TabPane>
 													<TabPane tabId='tabs3'>
-														<div className='description'>
-															<ChapterSettings />
-														</div>
+														<ChapterSettings />
 													</TabPane>
 													<TabPane tabId='tabs4'>
-														<div className='description'>
-															<ChapterSettings />
-														</div>
+														<ChapterSettings />
 													</TabPane>
 													<TabPane tabId='tabs5'>
-														<div className='description'>
-															<ChapterSettings />
-														</div>
+														<ChapterSettings />
 													</TabPane>
 												</TabContent>
 											</CardBody>

@@ -20,7 +20,7 @@ import bgDefault from "../../assets/img/bg-campaign.png";
 
 //Services
 import { getStory } from "../../services/stories";
-import { getChapters } from "../../services/data";
+import { getChapters } from "../../services/chapters";
 
 export default function Story(props) {
 	const [tabs, setTabs] = useState(2);
@@ -154,9 +154,7 @@ export default function Story(props) {
 														<StoryChapters slug={slug} chapters={chapters} />
 													</TabPane>
 													<TabPane tabId='tabs3'>
-														<div className='description'>
-															<StorySettings />
-														</div>
+														<StorySettings />
 													</TabPane>
 												</TabContent>
 											</CardBody>

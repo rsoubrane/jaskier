@@ -17,10 +17,10 @@ export default function Header(props) {
 				<span className='mask bg-gradient-default opacity-7' />
 				<Container className='align-items-center' fluid>
 					<Row>
-						<Col lg='10' md='12'>
-							{props.headtitle ? (
+						<Col>
+							{props.headTitle ? (
 								<div className='h4 mb-0 text-white text-uppercase d-none d-lg-inline-block'>
-									{props.headtitle}
+									{props.headTitle}
 								</div>
 							) : null}
 							<h1 className='display-2 text-white'>{props.title}</h1>
