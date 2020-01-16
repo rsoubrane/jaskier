@@ -8,16 +8,16 @@ import { DragDropContext } from "react-beautiful-dnd";
 //Components
 import List from "../../components/Chapters/Pages/List";
 import Editor from "../../components/Chapters/Pages/Editor";
+import LoadingTab from "../../components/Loaders/LoadingTab";
 
 //Utils
-import { submitAddPage, submitEditPage, submitRemovePage } from "../../services/data";
+import { submitAddPage, submitEditPage, submitRemovePage } from "../../services/pages";
 
 export default function ChaptersDetails(props) {
 	const [chapter] = useState(props.chapter);
 	const [pages, setPages] = useState(props.pages);
-	const [selectedPage, setSelectedPage] = useState(pages[0]);
+	const [selectedPage, setSelectedPage] = useState(props.pages[0]);
 	const [selectedIndex, setSelectedIndex] = useState(0);
-
 	const [isBlockEditorOpen, setIsBlockEditorOpen] = useState(true);
 
 	const handleBlockEditor = index => {
@@ -46,7 +46,7 @@ export default function ChaptersDetails(props) {
 		if (pageToDuplicate) {
 			newPage = {
 				page_id: pages.length + 1,
-				page_number: indexPage + 1,
+				page_number: indexPage + 2,
 				page_text: pageToDuplicate.page_text,
 				page_type: pageToDuplicate.page_type,
 				page_options: pageToDuplicate.page_options
@@ -54,7 +54,7 @@ export default function ChaptersDetails(props) {
 		} else {
 			newPage = {
 				page_id: pages.length + 1,
-				page_number: indexPage + 1,
+				page_number: indexPage + 2,
 				page_text: "Votre nouvelle page :",
 				page_image: "",
 				page_options: [
@@ -134,7 +134,7 @@ export default function ChaptersDetails(props) {
 	};
 
 	return (
-		<Row className='page_creator mt-4'>
+		<Row className='page_creator mt-3'>
 			<DragDropContext onDragEnd={onDragEnd}>
 				<List
 					pages={pages}
@@ -146,7 +146,6 @@ export default function ChaptersDetails(props) {
 					removePage={removePage}
 				/>
 			</DragDropContext>
-
 			<Editor
 				pages={pages}
 				isBlockEditorOpen={isBlockEditorOpen}

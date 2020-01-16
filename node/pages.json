@@ -1,33 +1,35 @@
 {
 	"pages": {
 		"4a251c2a-3664-11ea-aec2-2e728ce88125": {
-			"page_id": "4a251c2a-3664-11ea-aec2-2e728ce88125",
-			"chapter_id": "591b1230-3663-11ea-b70d-af8064c70e2c",
 			"status": 1,
-			"user_created": "romain",
-			"user_updated": "theo",
-			"date_created": "2019-12-23T17:26:08+01:00",
-			"date_updated": "2019-12-23T17:26:08+01:00",
+			"story_id": "98b24d5c-37fb-11ea-978f-2e728ce88125",
+			"story_slug": "batman",
+			"chapter_id": "8f290f50-38aa-11ea-8851-0bc204a23789",
+			"chapter_slug": "chapitre-1",
+			"page_id": "4a251c2a-3664-11ea-aec2-2e728ce88125",
 			"page_number": 1,
 			"page_type": 1,
-			"page_image": "xxx",
+			"page_image": "",
 			"page_text": "Go to question 2",
 			"page_options": [
 				{ "id": 1, "text": "Comme-ca", "redirectTo": 2 },
 				{ "id": 2, "text": "Par-ici", "redirectTo": 2 }
-			]
-		},
-		"d6ab3882-3664-11ea-978f-2e728ce88125": {
-			"page_id": "d6ab3882-3664-11ea-978f-2e728ce88125",
-			"chapter_id": "591b1230-3663-11ea-b70d-af8064c70e2c",
-			"status": 1,
+			],
 			"user_created": "romain",
 			"user_updated": "theo",
 			"date_created": "2019-12-23T17:26:08+01:00",
-			"date_updated": "2019-12-23T17:26:08+01:00",
+			"date_updated": "2019-12-23T17:26:08+01:00"
+		},
+		"d6ab3882-3664-11ea-978f-2e728ce88125": {
+			"status": 1,
+			"story_id": "98b24d5c-37fb-11ea-978f-2e728ce88125",
+			"story_slug": "batman",
+			"chapter_id": "8f290f50-38aa-11ea-8851-0bc204a23789",
+			"chapter_slug": "chapitre-1",
+			"page_id": "d6ab3882-3664-11ea-978f-2e728ce88125",
 			"page_number": 2,
 			"page_type": 1,
-			"page_image": "xxx",
+			"page_image": "",
 			"page_text": "A merchant offers you to take one of its items",
 			"page_options": [
 				{ "id": 1, "text": "Walk away !", "redirectTo": 3 },
@@ -47,7 +49,11 @@
 					],
 					"redirectTo": 5
 				}
-			]
+			],
+			"user_created": "romain",
+			"user_updated": "theo",
+			"date_created": "2019-12-23T17:26:08+01:00",
+			"date_updated": "2019-12-23T17:26:08+01:00"
 		}
 	}
 }

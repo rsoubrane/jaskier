@@ -16,7 +16,7 @@ import ChapterSettings from "./settings";
 
 //Services
 import { getChapter } from "../../services/chapters";
-import { getPages } from "../../services/data";
+import { getPages } from "../../services/pages";
 
 // Assets
 import bgDefault from "../../assets/img/bg-campaign.png";
@@ -34,6 +34,7 @@ export default function Chapter(props) {
 	const [setRedirect] = useState();
 	const [loading, setLoading] = useState(true);
 
+	//ComponentDidMount
 	useEffect(() => {
 		async function fetchData() {
 			try {
@@ -41,13 +42,13 @@ export default function Chapter(props) {
 				const pages = await getPages(chapter);
 				setChapter(chapter);
 				setPages(pages);
+				if (chapter && pages) setLoading(false);
 			} catch (error) {
 				console.log(error);
 			}
 		}
 		fetchData();
-		if (chapter && pages) setLoading(false);
-	}, [chapterSlug, chapter, pages]);
+	}, [chapterSlug]);
 
 	const toggleNavs = nav => {
 		setTabs(nav);
@@ -73,7 +74,7 @@ export default function Chapter(props) {
 	return (
 		<>
 			{chapter ? (
-				<Header title={chapter.chapter_name} background={bgDefault}>
+				<Header headTitle={chapter.story_name} title={chapter.chapter_name} background={bgDefault}>
 					<div className={"action_campaign"}>
 						{isAdmin ? (
 							<div className={"list_action_campaign"}>
@@ -97,7 +98,7 @@ export default function Chapter(props) {
 
 			{!supervisor ? (
 				<LoadingTab isVisible={loading}>
-					<Container fluid>
+					<Container fluid className='mt--7'>
 						<Row>
 							<div className=' col'>
 								<Card className='bg-secondary shadow'>
