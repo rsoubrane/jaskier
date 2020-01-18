@@ -15,8 +15,8 @@ import ChapterDetails from "./details";
 import ChapterSettings from "./settings";
 
 //Services
-import { getChapter } from "../../services/chapters";
-import { getPages } from "../../services/pages";
+import { getChapter } from "../../services/Data/chapters";
+import { getPages } from "../../services/Data/pages";
 
 // Assets
 import bgDefault from "../../assets/img/bg-campaign.png";

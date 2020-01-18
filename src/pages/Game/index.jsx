@@ -14,7 +14,7 @@ import Game from "./Game";
 import EndPage from "./EndPage";
 
 //Services
-import { db } from "../../utils/Firebase/firebase";
+import { db } from "../../services/Firebase/firebase";
 
 //JSON to be removed
 import questionsList from "./Questions.json";

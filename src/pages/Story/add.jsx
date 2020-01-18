@@ -11,7 +11,7 @@ import FormInput from "../../components/Forms/Form";
 import LoadingSpinner from "../../components/Loaders/LoadingSpinner";
 
 //Services
-import { addStory } from "../../services/stories";
+import { addStory } from "../../services/Data/stories";
 
 // Assets
 import bgDefault from "../../assets/img/bg-campaign.png";

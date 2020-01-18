@@ -11,8 +11,8 @@ import FormInput from "../../components/Forms/Form";
 import LoadingScreen from "../../components/Loaders/LoadingScreen";
 
 //Services
-import { getStory } from "../../services/stories";
-import { addChapter } from "../../services/chapters";
+import { getStory } from "../../services/Data/stories";
+import { addChapter } from "../../services/Data/chapters";
 
 // Assets
 import bgDefault from "../../assets/img/bg-campaign.png";

@@ -11,7 +11,7 @@ import Editor from "../../components/Chapters/Pages/Editor";
 import LoadingTab from "../../components/Loaders/LoadingTab";
 
 //Utils
-import { submitAddPage, submitEditPage, submitRemovePage } from "../../services/pages";
+import { submitAddPage, submitEditPage, submitRemovePage } from "../../services/Data/pages";
 
 export default function ChaptersDetails(props) {
 	const [chapter] = useState(props.chapter);

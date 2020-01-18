@@ -17,10 +17,10 @@ import {
 } from "reactstrap";
 
 //Routes
-import * as ROUTES from "../../constants/routes";
+import * as ROUTES from "../../routes";
 
 //Services
-import { getUserStories } from "../../services/stories";
+import { getUserStories } from "../../services/Data/stories";
 
 const Navigation = () => {
 	const [stories, setStories] = useState([]);

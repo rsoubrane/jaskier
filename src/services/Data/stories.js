@@ -1,4 +1,4 @@
-import { db } from "../utils/Firebase/firebase";
+import { db } from "../Firebase/firebase";
 import uuid from "uuid/v1";
 
 export const addStory = async (newStory, username) => {

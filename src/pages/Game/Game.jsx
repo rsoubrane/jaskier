@@ -2,7 +2,7 @@ import React, { useState, useEffect, useParams } from "react";
 
 //Components
 import FormInput from "../../components/Forms/Form";
-import LazyLoad from "../../components/Utils/LazyLoad";
+import LazyLoad from "../../components/Loaders/LazyLoad";
 
 //Assets
 import LogoFD from "../../assets/img/logo.png";
@@ -12,7 +12,7 @@ import { Button, Card, CardBody, Form, Row, Col } from "reactstrap";
 import { components } from "react-select";
 
 //Services
-import { db } from "../../utils/Firebase/firebase";
+import { db } from "../../services/Firebase/firebase";
 
 const { Option } = components;
 

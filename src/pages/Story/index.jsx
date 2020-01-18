@@ -19,8 +19,8 @@ import StorySettings from "./settings";
 import bgDefault from "../../assets/img/bg-campaign.png";
 
 //Services
-import { getStory } from "../../services/stories";
-import { getChapters } from "../../services/chapters";
+import { getStory } from "../../services/Data/stories";
+import { getChapters } from "../../services/Data/chapters";
 
 export default function Story(props) {
 	const [tabs, setTabs] = useState(2);

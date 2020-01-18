@@ -5,11 +5,11 @@ import { Container } from "reactstrap";
 import { Link } from "react-router-dom";
 
 //Firebase
-import { auth } from "../utils/Firebase/firebase";
+import { auth } from "../services/Firebase/firebase";
 
 //Services
-import { getUser } from "../services/user";
-import { getStories } from "../services/stories";
+import { getUser } from "../services/Data/user";
+import { getStories } from "../services/Data/stories";
 
 //Components
 import LoadingScreen from "../components/Loaders/LoadingScreen";
@@ -49,8 +49,8 @@ export default function Home() {
 					<h2>Welcome {user.username}</h2>
 
 					{stories.map(story => (
-						<div key={story.id}>
-							<Link to={`/game/${story.slug}`}>{story.name}</Link>
+						<div key={story.story_id}>
+							<Link to={`/game/${story.story_slug}`}>{story.story_name}</Link>
 							<br />
 						</div>
 					))}
