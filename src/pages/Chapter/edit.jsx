@@ -1,161 +1,206 @@
-import React from "react";
+import React, { useState } from "react";
+
+//Utils
 import { Button, Card, CardBody, FormGroup, Form, Container, Row, Col, CardFooter } from "reactstrap";
+import { Redirect } from "react-router-dom";
+import ReactDropzone from "react-dropzone";
 
 //Components
 import FormInput from "../../components/Forms/Form";
+import LoadingSpinner from "../../components/Loaders/LoadingSpinner";
+
+//Services
+import { editChapter } from "../../services/Data/chapters";
 
 // Assets
 import bgDefault from "../../assets/img/bg-campaign.png";
 
-class ChapterEdit extends React.Component {
-	state = {
-		form: {
-			name: this.props.chapter.name,
-			description: this.props.chapter.description,
-			image: this.props.chapter.image ? this.props.chapter.image.base64 : null,
-			icon: this.props.chapter.icon
-		},
-		slug: this.props.slug,
-		errors: false,
-		chapter: this.props.chapter,
-		disableForm: false
-	};
+export default function Chapter(props) {
+	const username = "romain";
 
-	handleChange = e => {
-		let id = e.target.id;
-		let value = e.target.value;
-		let form = this.state.form;
-		form[id] = value;
-		this.setState({ form: form });
-	};
+	const [chapter, setChapter] = useState(props.chapter);
+	const [redirect, setRedirect] = useState(false);
+	const [disabledForm, setDisabledForm] = useState(true);
+	const [loading, setLoading] = useState(false);
+	const [errors] = useState(false);
 
-	handleChangeSelect = option => {
-		let form = this.state.form;
-		form["icon"] = option.value;
-		this.setState({
-			form: form,
-			option: option
+	const handleChange = e => {
+		let slug = "";
+		if (e.currentTarget.name === "name") {
+			slug = e.currentTarget.value
+				.toLowerCase()
+				.replace(/ /g, "-")
+				.replace(/[^\w-]+/g, "");
+		} else if (chapter.slug) slug = chapter.slug;
+		setChapter({
+			...chapter,
+			[e.currentTarget.name]: e.currentTarget.value,
+			slug
 		});
+		if (chapter.name && chapter.description) setDisabledForm(false);
 	};
 
-	submitChapter = () => {
-		if (!this.state.disableForm) {
-			this.setState({ disableForm: true }, () => {});
+	const onPreviewDrop = files => {
+		if (files.length) {
+			let reader = new FileReader();
+			reader.onload = e => {
+				setChapter({
+					...chapter,
+					image: e.target.result
+				});
+			};
+			reader.readAsDataURL(files[0]);
+		} else {
+			alert("Veuillez insérer une Image");
 		}
 	};
 
-	render() {
-		const previewStyle = {
-			display: "block",
-			maxWidth: 300,
-			maxHeight: 200
+	const removeImage = () => {
+		setChapter({
+			...chapter,
+			image: ""
+		});
+	};
+
+	const submitChapter = async () => {
+		setLoading(true);
+		const newChapter = {
+			name: chapter.name,
+			slug: chapter.slug,
+			image: chapter.image || "",
+			description: chapter.description
 		};
-		return (
-			<>
-				<Container className='mt--7 mb-5' fluid>
-					<Row>
-						<Col className='order-xl-1 offset-xl-1' xl='10'>
-							<Form>
-								<Card className='bg-secondary shadow'>
-									<CardBody>
-										<h6 className='heading-small text-muted mb-4'>Informations</h6>
-										<div className='pl-lg-4'>
+		const res = await editChapter(chapter.chapter_id, newChapter, username);
+		if (res === "success") {
+			setLoading(false);
+			setRedirect(true);
+		}
+	};
+
+	const previewStyle = {
+		display: "block",
+		width: "100%"
+	};
+
+	return (
+		<>
+			{redirect ? (
+				<Redirect to={`/admin/story/${chapter.story_slug}/chapter/${chapter.slug}`} />
+			) : (
+				<LoadingSpinner isVisible={loading}>
+					<Container fluid className='mt--7'>
+						<Row>
+							<Col>
+								<Form>
+									<Card className='bg-secondary shadow'>
+										<CardBody>
+											<h6 className='heading-small text-muted mb-4'>Informations</h6>
+											<div className='pl-lg-4'>
+												<Row>
+													<Col lg='12'>
+														<FormInput.InputText
+															label='Nom du chapitre'
+															placeholder='Nom du chapitre'
+															id='name'
+															name='name'
+															change={handleChange}
+															error={errors ? errors["name"] : false}
+														/>
+													</Col>
+												</Row>
+												<Row>
+													<Col lg='12'>
+														<FormInput.InputTextArea
+															label='Description du chapitre'
+															placeholder='Description du chapitre'
+															id='description'
+															name='description'
+															change={handleChange}
+															error={errors ? errors["description"] : false}
+														/>
+													</Col>
+												</Row>
+											</div>
+											<hr className='my-4' />
+											<h6 className='heading-small text-muted mb-4'>Design du chapitre</h6>
 											<Row>
-												<Col lg='12'>
-													<FormInput.InputText
-														label='Nom du jeu'
-														placeholder='Nom du jeu'
-														id='name'
-														name='name'
-														value={this.state.form.name}
-														change={this.handleChange}
-														error={this.state.errors ? this.state.errors["name"] : false}
-													/>
-												</Col>
-											</Row>
-											<Row>
-												<Col lg='12'>
-													<FormInput.InputTextArea
-														label='Description du jeu'
-														placeholder='Description du jeu'
-														id='description'
-														name='description'
-														value={this.state.form.description}
-														change={this.handleChange}
-														error={
-															this.state.errors ? this.state.errors["description"] : false
-														}
-													/>
-												</Col>
-											</Row>
-										</div>
-										<hr className='my-4' />
-										<h6 className='heading-small text-muted mb-4'>Design de la Campagne</h6>
-										<div className='pl-lg-4'>
-											<Row>
-												<Col lg='4'>
-													<FormGroup>
+												<Col lg='5'>
+													<FormGroup className='pl-lg-4'>
 														<label className='form-control-label' htmlFor='input-username'>
-															Image du jeu
+															Image du chapitre
 														</label>
-														{this.state.file ? (
-															<img
-																alt='Preview'
-																src={this.state.file}
-																style={previewStyle}
-															/>
+
+														{chapter.image ? (
+															<>
+																<img
+																	alt='Preview'
+																	src={chapter.image}
+																	style={previewStyle}
+																/>
+																<Button color='danger' onClick={removeImage}>
+																	Supprimer l'image
+																</Button>
+															</>
 														) : (
-															<img
-																alt='Preview'
-																src={
-																	this.state.form.image
-																		? this.state.form.image
-																		: bgDefault
-																}
-																style={previewStyle}
-															/>
+															<img alt='Preview' src={bgDefault} style={previewStyle} />
 														)}
 													</FormGroup>
 												</Col>
-												<Col lg='8' md='12'>
+												<Col lg='7' md='12'>
 													<FormGroup>
 														<label className='form-control-label' htmlFor='input-username'>
 															Changer d'image
 														</label>
-														<div className='app'></div>
+														<ReactDropzone accept='image/*' onDrop={onPreviewDrop}>
+															{({ getRootProps, getInputProps }) => (
+																<section className={"drop_csv"}>
+																	<div
+																		className={"drop_csv_enter"}
+																		{...getRootProps()}>
+																		<div className={"drop_csv_border"}>
+																			<input {...getInputProps()} />
+																			<span
+																				className={
+																					"fa fa-cloud-upload-alt"
+																				}></span>
+																			<strong>DRAG & DROP</strong>
+																			<Button
+																				className='btn btn-secondary btn-outlined'
+																				onClick={e => e.preventDefault()}>
+																				OU SELECTIONNER UNE IMAGE
+																			</Button>
+																		</div>
+																	</div>
+																</section>
+															)}
+														</ReactDropzone>
 													</FormGroup>
 												</Col>
 											</Row>
-										</div>
-									</CardBody>
-									<CardFooter className='bg-white border-0'>
-										<Row className='align-items-center'>
-											<Col className='text-right' xs='12'>
-												<Button
-													color='danger'
-													onClick={this.props.returnChapter}
-													size='md'
-													disabled={this.state.disableForm}>
-													Retour
-												</Button>
-												<Button
-													color='primary'
-													onClick={() => this.submitChapter()}
-													size='md'
-													disabled={this.state.disableForm}>
-													Modifier
-												</Button>
-											</Col>
-										</Row>
-									</CardFooter>
-								</Card>
-							</Form>
-						</Col>
-					</Row>
-				</Container>
-			</>
-		);
-	}
+										</CardBody>
+										<CardFooter className='bg-white border-0'>
+											<Row className='align-items-center'>
+												<Col className='text-right' xs='12'>
+													<Button color='danger' onClick={() => setRedirect(true)} size='md'>
+														Annuler
+													</Button>
+													<Button
+														color='primary'
+														disabled={disabledForm}
+														onClick={() => submitChapter()}
+														size='md'>
+														Modifier le chapitre
+													</Button>
+												</Col>
+											</Row>
+										</CardFooter>
+									</Card>
+								</Form>
+							</Col>
+						</Row>
+					</Container>
+				</LoadingSpinner>
+			)}
+		</>
+	);
 }
-
-export default ChapterEdit;

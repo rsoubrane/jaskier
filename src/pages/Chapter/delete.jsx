@@ -3,13 +3,15 @@ import React, { useState } from "react";
 //Utils
 import { Button, Card, CardBody, Form, Container, Row, Col, CardFooter } from "reactstrap";
 import { Redirect } from "react-router-dom";
+import { removeChapter } from "../../services/Data/chapters";
 
 export default function ChapterDelete(props) {
 	const [disableForm, setDisableForm] = useState(false);
 	const [redirect, setRedirect] = useState(false);
 
-	const submitChapter = () => {
+	const deleteChapter = () => {
 		if (!disableForm) {
+			removeChapter(props.chapter.chapter_id);
 			setDisableForm(true);
 			setRedirect(true);
 		}
@@ -18,7 +20,7 @@ export default function ChapterDelete(props) {
 	return (
 		<>
 			{redirect ? (
-				<Redirect to={"/admin"} />
+				<Redirect to={`/admin/story/${props.chapter.story_slug}`} />
 			) : (
 				<Container fluid>
 					<Row>
@@ -42,7 +44,7 @@ export default function ChapterDelete(props) {
 												</Button>
 												<Button
 													color='primary'
-													onClick={() => submitChapter()}
+													onClick={() => deleteChapter()}
 													size='md'
 													disabled={disableForm}>
 													Supprimer le chapitre

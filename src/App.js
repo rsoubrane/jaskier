@@ -30,6 +30,7 @@ import Account from "./pages/Account";
 
 //Styles
 import "./assets/scss/style.scss";
+import { PrivateRoute } from "./services/AuthService";
 
 const token = localStorage.getItem("Token");
 //Check if token exists
@@ -48,7 +49,7 @@ if (token) {
 const App = () => (
 	<Router>
 		<div>
-			{/* <Navigation /> */}
+			<Navigation />
 			<Switch>
 				<Route exact path={ROUTES.HOME} component={Home} />
 				<Route exact path={ROUTES.NEW_STORY} component={StoryAdd} />
@@ -59,7 +60,6 @@ const App = () => (
 
 				<Route exact path={ROUTES.SIGN_IN} render={props => <AuthLayout {...props} />} />
 				<Route exact path={ROUTES.SIGN_UP} render={props => <AuthLayout {...props} />} />
-				{/* <Route path={ROUTES.ADMIN} component={Admin} /> */}
 				<Route path={ROUTES.ACCOUNT} component={Account} />
 			</Switch>
 		</div>

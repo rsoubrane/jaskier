@@ -1,5 +1,5 @@
 //Home
-export const HOME = "/";
+export const HOME = "/admin";
 
 //Story
 export const STORY = "/admin/story";
@@ -19,4 +19,3 @@ export const SIGN_OUT = "/signout";
 
 //Accounts
 export const ACCOUNT = "/account";
-export const ADMIN = "/admin";

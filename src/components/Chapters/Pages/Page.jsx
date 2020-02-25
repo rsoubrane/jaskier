@@ -15,10 +15,8 @@ export default function Page(props) {
 
 	const handleBlockEditor = props.handleBlockEditor;
 	const addPage = props.addPage;
+	const duplicatePage = props.duplicatePage;
 	const removePage = props.removePage;
-
-	const types = ["Choix simple", "Choix multiple", "Vrai/Faux", "Liste déroulante"];
-	const questionType = types[pageDetails.page_type - 1];
 
 	return (
 		<Draggable draggableId={(props.index + 1).toString()} index={props.index}>
@@ -32,8 +30,6 @@ export default function Page(props) {
 						<span className='page_label'> {pageDetails.page_text}</span>
 
 						<div className='page_bottom text-center'>
-							<div className='page_type'>{questionType}</div>
-
 							<div className='page_options'>{pageDetails.page_options.length} options</div>
 
 							{pageDetails.page_image ? <div className='page_image'>Image</div> : null}
@@ -49,7 +45,7 @@ export default function Page(props) {
 							<Add onClick={() => addPage(props.index)} className='icon' />
 						</div>
 						<div className='icon_container'>
-							<Duplicate onClick={() => addPage(props.index, pageDetails)} className='icon' />
+							<Duplicate onClick={() => duplicatePage(pageDetails, props.index)} className='icon' />
 						</div>
 						<div className='icon_container'>
 							<Delete onClick={() => removePage(props.index)} className='icon' />

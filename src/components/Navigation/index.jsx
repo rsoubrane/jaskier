@@ -66,11 +66,6 @@ const Navigation = () => {
 							Account
 						</NavLink>
 					</NavItem>
-					<NavItem>
-						<NavLink tag={Link} to={ROUTES.ADMIN}>
-							Admin
-						</NavLink>
-					</NavItem>
 					<UncontrolledDropdown nav inNavbar>
 						<DropdownToggle nav caret>
 							Stories

@@ -27,9 +27,36 @@ export const addStory = async (newStory, username) => {
 	return res;
 };
 
-export const editStory = async story => {};
+export const editStory = async (story_id, newStory, username) => {
+	let res = "";
+	const data = {
+		status: 1,
+		user_updated: username,
+		date_updated: new Date(),
+		story_name: newStory.name,
+		story_slug: newStory.slug,
+		story_image: newStory.image,
+		story_description: newStory.description
+	};
 
-export const removeStory = async story => {};
+	await db
+		.collection("stories")
+		.doc(story_id)
+		.set(data, { merge: true })
+		.then((res = "success"), console.log(`Story successfully edited`))
+		.catch(error => (res = error));
+
+	return res;
+};
+
+export const removeStory = async story_id => {
+	await db
+		.collection("stories")
+		.doc(story_id)
+		.delete();
+
+	return console.log(`Story ${story_id} successfully deleted !`);
+};
 
 export const getStories = async () => {
 	const stories = [];

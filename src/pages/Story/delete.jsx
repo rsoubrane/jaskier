@@ -3,22 +3,24 @@ import React, { useState } from "react";
 //Utils
 import { Button, Card, CardBody, Form, Container, Row, Col, CardFooter } from "reactstrap";
 import { Redirect } from "react-router-dom";
+import { removeStory } from "../../services/Data/stories";
 
 export default function StoryDelete(props) {
 	const [disableForm, setDisableForm] = useState(false);
 	const [redirect, setRedirect] = useState(false);
 
-	const submitStory = () => {
+	const deleteStory = () => {
 		if (!disableForm) {
+			removeStory(props.story.story_id);
 			setDisableForm(true);
 			setRedirect(true);
 		}
 	};
- 
+
 	return (
 		<>
 			{redirect ? (
-				<Redirect to={"/admin"} />
+				<Redirect to='/' />
 			) : (
 				<Container fluid>
 					<Row>
@@ -42,7 +44,7 @@ export default function StoryDelete(props) {
 												</Button>
 												<Button
 													color='primary'
-													onClick={() => submitStory()}
+													onClick={() => deleteStory()}
 													size='md'
 													disabled={disableForm}>
 													Supprimer le jeu

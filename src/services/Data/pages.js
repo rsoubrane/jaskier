@@ -25,8 +25,7 @@ export const submitAddPage = async (chapterInfos, newPage, indexPage) => {
 		chapter_id: chapterInfos.chapter_id,
 		chapter_slug: chapterInfos.chapter_slug,
 		page_id: uid,
-		page_number: indexPage + 1,
-		page_type: newPage.page_type,
+		page_number: newPage.page_number,
 		page_image: newPage.page_image || null,
 		page_text: newPage.page_text,
 		page_options: newPage.page_options,
@@ -35,13 +34,11 @@ export const submitAddPage = async (chapterInfos, newPage, indexPage) => {
 		date_created: new Date(),
 		date_updated: ""
 	};
-
 	await db
 		.collection("pages")
 		.doc(uid)
 		.set(data);
-
-	console.log("New Page Added");
+	console.log(`Page ${uid} Added`);
 };
 
 export const submitEditPage = (newPage, indexPage, indexArrange) => {
@@ -49,6 +46,10 @@ export const submitEditPage = (newPage, indexPage, indexArrange) => {
 	console.log("newPage: ", newPage);
 };
 
-export const submitRemovePage = indexPage => {
-	console.log(`Page ${indexPage} Removed`);
+export const submitRemovePage = async page_id => {
+	await db
+		.collection("pages")
+		.doc(page_id)
+		.delete();
+	return console.log(`Page ${page_id} Removed`);
 };

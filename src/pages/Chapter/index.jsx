@@ -68,8 +68,11 @@ export default function Chapter(props) {
 		} else {
 			setRedirect("/admin/chapter/" + changedChapter.slug);
 			props.refresh();
+			window.location.reload();
 		}
 	};
+
+	console.log("chapter: ", chapter);
 
 	return (
 		<>

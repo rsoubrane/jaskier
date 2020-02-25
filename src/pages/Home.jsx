@@ -13,6 +13,7 @@ import { getStories } from "../services/Data/stories";
 
 //Components
 import LoadingScreen from "../components/Loaders/LoadingScreen";
+import Navigation from "../components/Navigation";
 
 export default function Home() {
 	const [user, setUser] = useState();

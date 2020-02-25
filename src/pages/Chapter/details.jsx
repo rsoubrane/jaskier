@@ -8,7 +8,6 @@ import { DragDropContext } from "react-beautiful-dnd";
 //Components
 import List from "../../components/Chapters/Pages/List";
 import Editor from "../../components/Chapters/Pages/Editor";
-import LoadingTab from "../../components/Loaders/LoadingTab";
 
 //Utils
 import { submitAddPage, submitEditPage, submitRemovePage } from "../../services/Data/pages";
@@ -37,35 +36,26 @@ export default function ChaptersDetails(props) {
 		setIsBlockEditorOpen(!isBlockEditorOpen);
 	};
 
-	const addPage = (indexPage, pageToDuplicate) => {
-		if (indexPage == null) indexPage = pages.length;
-
-		const copyPages = cloneDeep(pages);
-
-		let newPage = "";
-		if (pageToDuplicate) {
-			newPage = {
-				page_id: pages.length + 1,
-				page_number: indexPage + 2,
-				page_text: pageToDuplicate.page_text,
-				page_type: pageToDuplicate.page_type,
-				page_options: pageToDuplicate.page_options
-			};
-		} else {
-			newPage = {
-				page_id: pages.length + 1,
-				page_number: indexPage + 2,
-				page_text: "Votre nouvelle page :",
-				page_image: "",
-				page_options: [
-					{ id: 1, text: "Choix 1" },
-					{ id: 2, text: "Choix 2" },
-					{ id: 3, text: "Choix 3" }
-				],
-				page_type: 1
-			};
+	const addPage = indexPage => {
+		console.log("indexPage: ", indexPage);
+		if (indexPage < selectedIndex) {
+			setSelectedIndex(selectedIndex + 1);
 		}
-		console.log("newPage: ", newPage);
+		if (typeof indexPage != "number") indexPage = pages.length - 1;
+
+		let copyPages = cloneDeep(pages);
+
+		const newPage = {
+			page_id: pages.length + 1,
+			page_number: indexPage + 2,
+			page_text: "Votre nouvelle page :",
+			page_image: "",
+			page_options: [
+				{ id: 1, text: "Choix 1" },
+				{ id: 2, text: "Choix 2" },
+				{ id: 3, text: "Choix 3" }
+			]
+		};
 		copyPages.splice(indexPage + 1, 0, newPage);
 		copyPages.map((v, index) => ({ ...v, page_number: index + 1 }));
 		setPages(copyPages);
@@ -73,8 +63,33 @@ export default function ChaptersDetails(props) {
 		submitAddPage(chapter, newPage, indexPage);
 	};
 
+	const duplicatePage = (pageToDuplicate, indexPage) => {
+		console.log("indexPage: ", indexPage);
+		if (indexPage < selectedIndex) setSelectedIndex(selectedIndex + 1);
+		if (typeof indexPage != "number") indexPage = pages.length;
+
+		const duplicatedPage = cloneDeep(pageToDuplicate);
+		let copyPages = cloneDeep(pages);
+
+		const newPage = {
+			page_id: pages.length + 1,
+			page_number: indexPage + 2,
+			page_text: duplicatedPage.page_text,
+			page_image: duplicatedPage.page_image,
+			page_options: duplicatedPage.page_options
+		};
+		copyPages.splice(indexPage + 1, 0, newPage);
+		copyPages.map((v, index) => ({ ...v, page_number: index + 1 }));
+		console.log("copyPages: ", copyPages);
+		setPages(copyPages);
+		console.log("pages: ", pages);
+
+		submitAddPage(chapter, newPage, indexPage);
+	};
+
 	const removePage = indexPage => {
 		const copyPages = cloneDeep(pages);
+		const page_id = pages[indexPage].page_id;
 		copyPages.splice(indexPage, 1);
 
 		if (indexPage === 0) setSelectedIndex(0);
@@ -82,7 +97,7 @@ export default function ChaptersDetails(props) {
 			setSelectedIndex(copyPages.length - 2);
 		setPages(copyPages);
 		setSelectedPage(pages[selectedIndex]);
-		submitRemovePage(indexPage);
+		submitRemovePage(page_id);
 	};
 
 	const submitChanges = (updatedPage, idPage) => {
@@ -96,16 +111,15 @@ export default function ChaptersDetails(props) {
 		const copyPages = cloneDeep(pages);
 		const updatedPage = cloneDeep(pageToUpdate);
 
-		const newQuestion = (copyPages[selectedIndex] = {
+		const newPage = (copyPages[selectedIndex] = {
 			page_text: updatedPage.page_text,
-			page_type: updatedPage.page_type,
 			page_options: updatedPage.page_options,
 			page_image: updatedPage.page_image
 		});
 
 		setPages(copyPages);
 
-		submitEditPage(newQuestion, selectedIndex + 1);
+		submitEditPage(newPage, selectedIndex + 1);
 	};
 
 	const onDragEnd = result => {
@@ -143,6 +157,7 @@ export default function ChaptersDetails(props) {
 					selectedPage={selectedPage}
 					selectedIndex={selectedIndex}
 					addPage={addPage}
+					duplicatePage={duplicatePage}
 					removePage={removePage}
 				/>
 			</DragDropContext>

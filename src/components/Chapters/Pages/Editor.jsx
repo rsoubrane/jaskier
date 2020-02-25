@@ -10,26 +10,17 @@ import FormInput from "../../Forms/Form";
 import Option from "./Option";
 
 export default function PageEditor(props) {
+	console.log("props: ", props);
+
 	const isBlockEditorOpen = props.isBlockEditorOpen;
 	const selectedPage = props.selectedPage;
 	const selectedIndex = props.selectedIndex;
 
-	const types = ["Choix simple", "Choix multiple", "Vrai/Faux", "Liste déroulante"];
-
 	const [pageId, setPageId] = useState(selectedPage.page_id);
 	const [pageNumber, setPageNumber] = useState(selectedPage.page_number);
 	const [pageText, setPageText] = useState(selectedPage.page_text);
-	const [pageType, setPageType] = useState(types[selectedPage.page_type - 1]);
-	const [pageTypeId, setPageTypeId] = useState(selectedPage.page_type);
 	const [pageOptions, setPageOptions] = useState(selectedPage.page_options);
 	const [pageImage, setPageImage] = useState(selectedPage.page_image);
-
-	const options = [
-		{ id: 1, icon: "ni ni-bullet-list-67", label: "Choix simple" },
-		{ id: 2, icon: "ni ni-check-bold", label: "Choix multiple" },
-		{ id: 3, icon: "ni ni-bold-right", label: "Vrai/Faux" },
-		{ id: 4, icon: "ni ni-tag", label: "Liste déroulante" }
-	];
 
 	const [errors] = useState(false);
 
@@ -40,8 +31,6 @@ export default function PageEditor(props) {
 			setPageId(props.selectedPage.page_id);
 			setPageNumber(props.selectedPage.page_number);
 			setPageText(props.selectedPage.page_text);
-			setPageType(types[props.selectedPage.page_type - 1]);
-			setPageTypeId(props.selectedPage.page_type);
 			setPageOptions(props.selectedPage.page_options);
 			setPageImage(props.selectedPage.page_image);
 		}
@@ -50,37 +39,12 @@ export default function PageEditor(props) {
 		props.selectedPage.page_number,
 		props.selectedPage.page_text,
 		props.selectedPage.page_image,
-		props.selectedPage.page_type,
 		props.selectedPage.page_options,
-		types,
 		pageNumber
 	]);
 
 	const handleChangeText = e => {
 		setPageText(e.target.value);
-	};
-
-	const handleChangeType = option => {
-		let copyOptions = cloneDeep(pageOptions).slice();
-
-		if (pageType !== option.label) {
-			if (pageType === "Vrai/Faux") {
-				copyOptions = [
-					{ id: 1, text: "Choix 1" },
-					{ id: 2, text: "Choix 2" },
-					{ id: 3, text: "Choix 3" }
-				];
-			}
-			setPageType(option.label);
-			setPageTypeId(option.id);
-			if (option.label === "Vrai/Faux") {
-				copyOptions = [
-					{ id: 1, text: "Vrai" },
-					{ id: 2, text: "Faux" }
-				];
-			}
-		}
-		setPageOptions(copyOptions);
 	};
 
 	const handleChangeOptions = e => {
@@ -145,7 +109,6 @@ export default function PageEditor(props) {
 			{
 				page_id: pageId,
 				page_text: pageText,
-				page_type: pageTypeId,
 				page_image: pageImage,
 				page_options: pageOptions
 			},
@@ -155,7 +118,6 @@ export default function PageEditor(props) {
 
 	const revertValues = () => {
 		setPageText(selectedPage.page_text);
-		setPageType(types[selectedPage.page_type - 1]);
 		setPageOptions(selectedPage.page_options);
 		setPageImage(selectedPage.page_image);
 	};
@@ -179,6 +141,8 @@ export default function PageEditor(props) {
 		}
 	};
 
+	console.log("pageOptions: ", pageOptions);
+
 	return (
 		<DragDropContext onDragEnd={onDragEnd}>
 			<Col lg='6' className={`mb-5 creator_edit ${!isBlockEditorOpen ? "open" : null}`}>
@@ -190,21 +154,6 @@ export default function PageEditor(props) {
 								<Row>
 									<Col xs='12'>
 										<div className='container_page_editor'>
-											<Row>
-												<Col xs='8' lg='7'>
-													<FormInput.SingleSelect
-														label='Type de page : '
-														id='type'
-														name='type'
-														value={types[pageTypeId - 1]}
-														options={options}
-														change={handleChangeType}
-														removeImage={removeImage}
-														placeholder={pageType}
-													/>
-												</Col>
-											</Row>
-
 											<FormInput.InputTextArea
 												label='Text :'
 												id='label'
@@ -227,32 +176,22 @@ export default function PageEditor(props) {
 															</label>
 															{pageOptions.map((option, key) => (
 																<div key={option.id} className='list_option'>
-																	{pageType === "Vrai/Faux" ? (
-																		<Option.Boolean
-																			index={key}
-																			option={option}
-																			pageOptions={pageOptions}
-																			handleChange={handleChangeOptions}
-																			provided={provided}
-																		/>
-																	) : (
-																		<Draggable
-																			draggableId={option.id.toString()}
-																			index={key}>
-																			{provided => (
-																				<Option.Choices
-																					index={key}
-																					option={option}
-																					pageOptions={pageOptions}
-																					add={addOption}
-																					duplicate={duplicateOption}
-																					remove={removeOption}
-																					change={handleChangeOptions}
-																					provided={provided}
-																				/>
-																			)}
-																		</Draggable>
-																	)}
+																	<Draggable
+																		draggableId={option.id.toString()}
+																		index={key}>
+																		{provided => (
+																			<Option.Choices
+																				index={key}
+																				option={option}
+																				pageOptions={pageOptions}
+																				add={addOption}
+																				duplicate={duplicateOption}
+																				remove={removeOption}
+																				change={handleChangeOptions}
+																				provided={provided}
+																			/>
+																		)}
+																	</Draggable>
 																</div>
 															))}
 														</div>
