@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 //Utils
 import { Button, Card, CardBody, Row, Col } from "reactstrap";
@@ -21,7 +21,7 @@ export default function PagesList(props) {
 					<CardBody>
 						<h6 className='heading-small text-muted mb-4 text-left'>Pages</h6>
 						<Droppable droppableId='pageList'>
-							{provided => (
+							{(provided) => (
 								<div className='row' {...provided.droppableProps} ref={provided.innerRef}>
 									{pages
 										? pages.map((page, index) => (

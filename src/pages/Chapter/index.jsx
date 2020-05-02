@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 // Components
+import Navigation from "../../components/Navigation";
 import Header from "../../components/Headers/Header";
 import LoadingTab from "../../components/Loaders/LoadingTab";
 
@@ -50,11 +51,11 @@ export default function Chapter(props) {
 		fetchData();
 	}, [chapterSlug]);
 
-	const toggleNavs = nav => {
+	const toggleNavs = (nav) => {
 		setTabs(nav);
 	};
 
-	const actionSupervisor = action => {
+	const actionSupervisor = (action) => {
 		setSupervisor(action);
 	};
 
@@ -62,7 +63,7 @@ export default function Chapter(props) {
 		setSupervisor(null);
 	};
 
-	const editChapter = changedChapter => {
+	const editChapter = (changedChapter) => {
 		if (changedChapter.slug === chapter.slug) {
 			setChapterSlug(chapter.slug);
 		} else {
@@ -72,10 +73,9 @@ export default function Chapter(props) {
 		}
 	};
 
-	console.log("chapter: ", chapter);
-
 	return (
 		<>
+			<Navigation />
 			{chapter ? (
 				<Header headTitle={chapter.story_name} title={chapter.chapter_name} background={bgDefault}>
 					<div className={"action_campaign"}>
@@ -115,7 +115,7 @@ export default function Chapter(props) {
 												<NavItem>
 													<NavLink
 														className={classnames("btn btn-primary mb-sm-3 mb-md-0", {
-															active: tabs === 1
+															active: tabs === 1,
 														})}
 														onClick={() => toggleNavs(1)}>
 														<i className='ni ni-cloud-upload-96 mr-2' />
@@ -125,7 +125,7 @@ export default function Chapter(props) {
 												<NavItem>
 													<NavLink
 														className={classnames("btn btn-primary mb-sm-3 mb-md-0", {
-															active: tabs === 2
+															active: tabs === 2,
 														})}
 														onClick={() => toggleNavs(2)}>
 														<i className='ni ni-calendar-grid-58 mr-2' />
@@ -135,7 +135,7 @@ export default function Chapter(props) {
 												<NavItem>
 													<NavLink
 														className={classnames("btn btn-primary mb-sm-3 mb-md-0", {
-															active: tabs === 3
+															active: tabs === 3,
 														})}
 														onClick={() => toggleNavs(3)}>
 														<i className='ni ni-settings mr-2' />
@@ -145,7 +145,7 @@ export default function Chapter(props) {
 												<NavItem>
 													<NavLink
 														className={classnames("btn btn-primary mb-sm-3 mb-md-0", {
-															active: tabs === 4
+															active: tabs === 4,
 														})}
 														onClick={() => toggleNavs(4)}>
 														<i className='ni ni-settings mr-2' />
@@ -155,7 +155,7 @@ export default function Chapter(props) {
 												<NavItem>
 													<NavLink
 														className={classnames("btn btn-primary mb-sm-3 mb-md-0", {
-															active: tabs === 5
+															active: tabs === 5,
 														})}
 														onClick={() => toggleNavs(5)}>
 														<i className='ni ni-settings mr-2' />

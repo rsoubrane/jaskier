@@ -4,9 +4,6 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 import { store } from "react-notifications-component";
 
-//Services
-import { Auth } from "../services/AuthService";
-
 //Components
 import LoadingScreen from "../components/Loaders/LoadingScreen";
 import Navigation from "../components/Navigation";
@@ -22,14 +19,14 @@ import * as routes from "../routes.js";
 class Admin extends React.Component {
 	state = {
 		loading: true,
-		campaigns: false
+		campaigns: false,
 	};
 
 	componentDidMount() {
 		this.getStorys();
 	}
 
-	getRoutes = routes => {
+	getRoutes = (routes) => {
 		if (localStorage.getItem("user")) {
 			const userAccess = JSON.parse(localStorage.getItem("user")).allow[0];
 			return routes.map((prop, key) => {
@@ -68,13 +65,13 @@ class Admin extends React.Component {
 		return routes;
 	};
 
-	getRoutesChapter = campaign => {
+	getRoutesChapter = (campaign) => {
 		let routes = [];
 		routes.push(
 			<Route
 				exact
 				path={`/admin/campaign/${campaign.slug}/survey/:surveySlug`}
-				render={props => <Chapter {...props} />}
+				render={(props) => <Chapter {...props} />}
 			/>
 		);
 		return routes;
@@ -90,7 +87,7 @@ class Admin extends React.Component {
 			animationIn: ["animated", "fadeIn"],
 			animationOut: ["animated", "fadeOut"],
 			dismiss: { duration: 5000 },
-			dismissable: { click: true }
+			dismissable: { click: true },
 		});
 	};
 

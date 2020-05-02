@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 //Utils
 import { Row } from "reactstrap";
@@ -7,7 +7,7 @@ import { DragDropContext } from "react-beautiful-dnd";
 
 //Components
 import List from "../../components/Chapters/Pages/List";
-import Editor from "../../components/Chapters/Pages/Editor";
+import Editor from "../../components/Chapters/Pages/Editor.jsx";
 
 //Utils
 import { submitAddPage, submitEditPage, submitRemovePage } from "../../services/Data/pages";
@@ -19,7 +19,7 @@ export default function ChaptersDetails(props) {
 	const [selectedIndex, setSelectedIndex] = useState(0);
 	const [isBlockEditorOpen, setIsBlockEditorOpen] = useState(true);
 
-	const handleBlockEditor = index => {
+	const handleBlockEditor = (index) => {
 		if (isBlockEditorOpen === false) {
 			triggerBlockEditor();
 			setSelectedPage({});
@@ -36,8 +36,7 @@ export default function ChaptersDetails(props) {
 		setIsBlockEditorOpen(!isBlockEditorOpen);
 	};
 
-	const addPage = indexPage => {
-		console.log("indexPage: ", indexPage);
+	const addPage = (indexPage) => {
 		if (indexPage < selectedIndex) {
 			setSelectedIndex(selectedIndex + 1);
 		}
@@ -53,8 +52,8 @@ export default function ChaptersDetails(props) {
 			page_options: [
 				{ id: 1, text: "Choix 1" },
 				{ id: 2, text: "Choix 2" },
-				{ id: 3, text: "Choix 3" }
-			]
+				{ id: 3, text: "Choix 3" },
+			],
 		};
 		copyPages.splice(indexPage + 1, 0, newPage);
 		copyPages.map((v, index) => ({ ...v, page_number: index + 1 }));
@@ -64,7 +63,6 @@ export default function ChaptersDetails(props) {
 	};
 
 	const duplicatePage = (pageToDuplicate, indexPage) => {
-		console.log("indexPage: ", indexPage);
 		if (indexPage < selectedIndex) setSelectedIndex(selectedIndex + 1);
 		if (typeof indexPage != "number") indexPage = pages.length;
 
@@ -76,18 +74,15 @@ export default function ChaptersDetails(props) {
 			page_number: indexPage + 2,
 			page_text: duplicatedPage.page_text,
 			page_image: duplicatedPage.page_image,
-			page_options: duplicatedPage.page_options
+			page_options: duplicatedPage.page_options,
 		};
 		copyPages.splice(indexPage + 1, 0, newPage);
 		copyPages.map((v, index) => ({ ...v, page_number: index + 1 }));
-		console.log("copyPages: ", copyPages);
 		setPages(copyPages);
-		console.log("pages: ", pages);
-
 		submitAddPage(chapter, newPage, indexPage);
 	};
 
-	const removePage = indexPage => {
+	const removePage = (indexPage) => {
 		const copyPages = cloneDeep(pages);
 		const page_id = pages[indexPage].page_id;
 		copyPages.splice(indexPage, 1);
@@ -103,18 +98,19 @@ export default function ChaptersDetails(props) {
 	const submitChanges = (updatedPage, idPage) => {
 		editPage(updatedPage, idPage);
 	};
-	const cancelChanges = idPage => {
+	const cancelChanges = (idPage) => {
 		editPage(selectedPage, idPage);
 	};
 
-	const editPage = pageToUpdate => {
+	const editPage = (pageToUpdate) => {
 		const copyPages = cloneDeep(pages);
 		const updatedPage = cloneDeep(pageToUpdate);
 
 		const newPage = (copyPages[selectedIndex] = {
+			page_id: selectedPage.page_id,
 			page_text: updatedPage.page_text,
 			page_options: updatedPage.page_options,
-			page_image: updatedPage.page_image
+			page_image: updatedPage.page_image,
 		});
 
 		setPages(copyPages);
@@ -122,7 +118,7 @@ export default function ChaptersDetails(props) {
 		submitEditPage(newPage, selectedIndex + 1);
 	};
 
-	const onDragEnd = result => {
+	const onDragEnd = (result) => {
 		const reorder = (list, startIndex, endIndex) => {
 			const result = Array.from(list);
 			const [removed] = result.splice(startIndex, 1);
@@ -140,9 +136,7 @@ export default function ChaptersDetails(props) {
 				else if (copyPages.length <= 2 && selectedIndex === 1) setSelectedIndex(0);
 				else setSelectedIndex(result.destination.index);
 			}
-			console.log("newPages: ", newPages);
 			setPages(newPages);
-
 			submitEditPage(currentPage, result.source.index + 1, result.destination.index + 1);
 		}
 	};

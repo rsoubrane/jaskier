@@ -5,7 +5,7 @@ import { registerUser } from "../../services/Data/user";
 
 //Utils
 import { Link } from "react-router-dom";
-import { Form, FormGroup, Input, FormFeedback, CardTitle } from "reactstrap";
+import { Form, FormGroup, Input, CardTitle } from "reactstrap";
 
 //Constants
 import * as ROUTES from "../../routes";
@@ -18,24 +18,17 @@ export default function SignUp() {
 	const [errors, setErrors] = useState();
 	const [validate, setValidate] = useState({
 		username: "",
-		email: ""
+		email: "",
 	});
 
-	const validateUsername = e => {
-		const usernameRex = /^((?!.*[-_]{2,})(?=^[^-_].*[^-_]$)[\w\s-]{3,9})$/;
-		if (usernameRex.test(e.target.value)) validate.username = "has-success";
-		else validate.username = "has-danger";
-		setValidate(validate);
-	};
-
-	const validateEmail = e => {
+	const validateEmail = (e) => {
 		const emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		if (emailRex.test(e.target.value)) validate.email = "has-success";
 		else validate.email = "has-danger";
 		setValidate(validate);
 	};
 
-	const handleKeyPress = event => {
+	const handleKeyPress = (event) => {
 		// [Enter] should not submit the form when choosing an address.
 		if (event.keyCode === 13) {
 			event.preventDefault();
@@ -51,7 +44,7 @@ export default function SignUp() {
 	return (
 		<>
 			<CardTitle className='text-center'>Créer un compte</CardTitle>
-			<Form className='form-signing' onKeyPress={handleKeyPress} onSubmit={e => e.preventDefault()}>
+			<Form className='form-signing' onKeyPress={handleKeyPress} onSubmit={(e) => e.preventDefault()}>
 				<FormGroup>
 					<Input
 						type='text'
@@ -62,7 +55,7 @@ export default function SignUp() {
 						autoFocus
 						value={username}
 						onKeyPress={handleKeyPress}
-						onChange={e => {
+						onChange={(e) => {
 							setUsername(e.target.value);
 						}}
 					/>
@@ -75,7 +68,7 @@ export default function SignUp() {
 						placeholder='Email address'
 						autoComplete='off'
 						value={email}
-						onChange={e => {
+						onChange={(e) => {
 							validateEmail(e);
 							setEmail(e.target.value);
 						}}
@@ -89,7 +82,7 @@ export default function SignUp() {
 						id='password'
 						placeholder='Entrer un mot de passe'
 						value={password}
-						onChange={e => {
+						onChange={(e) => {
 							setPassword(e.target.value);
 						}}
 					/>
@@ -101,7 +94,7 @@ export default function SignUp() {
 						id='confirmPassword'
 						placeholder='Confirmer le mot de passe'
 						value={confirmPassword}
-						onChange={e => setConfirmPassword(e.target.value)}
+						onChange={(e) => setConfirmPassword(e.target.value)}
 					/>
 				</FormGroup>
 
@@ -109,7 +102,7 @@ export default function SignUp() {
 				<button
 					className='btn btn-md btn-primary btn-block text-uppercase'
 					type='submit'
-					onClick={e => submitForm(e)}>
+					onClick={(e) => submitForm(e)}>
 					Créer un compte
 				</button>
 

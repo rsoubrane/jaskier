@@ -22,7 +22,7 @@ export default function Home() {
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		auth.onAuthStateChanged(user => {
+		auth.onAuthStateChanged((user) => {
 			if (user) setUserId(user.uid);
 		});
 
@@ -42,6 +42,7 @@ export default function Home() {
 
 	return (
 		<LoadingScreen isVisible={loading}>
+			<Navigation />
 			{user && stories ? (
 				<Container fluid>
 					<h1>Home Page</h1>
@@ -49,7 +50,7 @@ export default function Home() {
 
 					<h2>Welcome {user.username}</h2>
 
-					{stories.map(story => (
+					{stories.map((story) => (
 						<div key={story.story_id}>
 							<Link to={`/game/${story.story_slug}`}>{story.story_name}</Link>
 							<br />

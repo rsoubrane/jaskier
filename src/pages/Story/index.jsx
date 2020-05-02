@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 // Components
 import Header from "../../components/Headers/Header";
 import LoadingScreen from "../../components/Loaders/LoadingScreen";
+import Navigation from "../../components/Navigation";
 
 //Utils
 import { Button, Card, Nav, NavLink, NavItem, CardBody, TabContent, Container, Row, TabPane } from "reactstrap";
@@ -30,7 +31,6 @@ export default function Story(props) {
 
 	let { storySlug } = useParams();
 	const [slug, setSlug] = useState(storySlug);
-
 	const [isAdmin] = useState(true);
 	const [supervisor, setSupervisor] = useState();
 	const [setRedirect] = useState();
@@ -53,11 +53,11 @@ export default function Story(props) {
 		fetchData();
 	}, [storySlug]);
 
-	const toggleNavs = nav => {
+	const toggleNavs = (nav) => {
 		setTabs(nav);
 	};
 
-	const actionSupervisor = action => {
+	const actionSupervisor = (action) => {
 		setSupervisor(action);
 	};
 
@@ -65,7 +65,7 @@ export default function Story(props) {
 		setSupervisor(null);
 	};
 
-	const editStory = newStory => {
+	const editStory = (newStory) => {
 		if (newStory.slug === story.slug) {
 			setSlug(story.slug);
 		} else {
@@ -76,6 +76,7 @@ export default function Story(props) {
 
 	return (
 		<>
+			<Navigation />
 			{story ? (
 				<Header title={story.story_name} description={story.story_description} background={bgDefault}>
 					<div className={"action_campaign"}>
@@ -115,7 +116,7 @@ export default function Story(props) {
 												<NavItem>
 													<NavLink
 														className={classnames("btn btn-primary mb-sm-3 mb-md-0", {
-															active: tabs === 1
+															active: tabs === 1,
 														})}
 														onClick={() => toggleNavs(1)}>
 														<i className='ni ni-cloud-upload-96 mr-2' />
@@ -125,7 +126,7 @@ export default function Story(props) {
 												<NavItem>
 													<NavLink
 														className={classnames("btn btn-primary mb-sm-3 mb-md-0", {
-															active: tabs === 2
+															active: tabs === 2,
 														})}
 														onClick={() => toggleNavs(2)}>
 														<i className='ni ni-calendar-grid-58 mr-2' />
@@ -135,7 +136,7 @@ export default function Story(props) {
 												<NavItem>
 													<NavLink
 														className={classnames("btn btn-primary mb-sm-3 mb-md-0", {
-															active: tabs === 3
+															active: tabs === 3,
 														})}
 														onClick={() => toggleNavs(3)}>
 														<i className='ni ni-settings mr-2' />

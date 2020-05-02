@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 
 //Utils
-import { Button, Col } from "reactstrap";
+import { Button, Col, Label } from "reactstrap";
 import cloneDeep from "lodash/cloneDeep";
+import Select from "react-select";
 
 //Components
 import FormInput from "../../Forms/Form";
@@ -12,7 +13,7 @@ import {
 	MdAdd as Add,
 	MdDelete as Delete,
 	MdContentCopy as Duplicate,
-	MdFormatAlignCenter as Handle
+	MdFormatAlignCenter as Handle,
 } from "react-icons/md";
 
 Option.Boolean = class Boolean extends Component {
@@ -35,13 +36,9 @@ Option.Boolean = class Boolean extends Component {
 
 Option.Choices = class Choices extends Component {
 	render() {
-		const provided = this.props.provided;
 		const option = cloneDeep(this.props.option);
-		const id = this.props.index;
-		const add = this.props.add;
-		const duplicate = this.props.duplicate;
-		const remove = this.props.remove;
-		const change = this.props.change;
+
+		const { provided, id, pageOptions, add, duplicate, remove, change, redirectList, changeRedirect } = this.props;
 
 		return (
 			<div
@@ -66,6 +63,18 @@ Option.Choices = class Choices extends Component {
 						<Delete className='icon' />
 					</Button>
 				</Col>
+
+				<div className='w-25 mt-2 mb-5'>
+					<Label htmlFor={id}>Vers page :</Label>
+					<Select
+						placeholder='Choisir page'
+						inputProps={{ id }}
+						className='basic-single'
+						value={pageOptions[id - 1].redirectTo}
+						options={redirectList}
+						onChange={(option) => changeRedirect(option, id)}
+					/>
+				</div>
 			</div>
 		);
 	}

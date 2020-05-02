@@ -13,12 +13,12 @@ import * as ROUTES from "../../routes";
 const SignIn = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const [errors, setErrors] = useState("");
+	const [errors] = useState("");
 	const [validate, setValidate] = useState({
-		emailState: ""
+		emailState: "",
 	});
 
-	const validateEmail = e => {
+	const validateEmail = (e) => {
 		const emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		if (emailRex.test(e.target.value)) {
 			validate.emailState = "has-success";
@@ -28,7 +28,7 @@ const SignIn = () => {
 		setValidate(validate);
 	};
 
-	const submitForm = async e => {
+	const submitForm = async (e) => {
 		e.preventDefault();
 		let errors = await loginUser(email, password);
 		console.log("errors: ", errors);
@@ -37,7 +37,7 @@ const SignIn = () => {
 	return (
 		<>
 			<CardTitle className='text-center'>Connexion</CardTitle>
-			<Form className='form-signing' onSubmit={e => submitForm(e)}>
+			<Form className='form-signing' onSubmit={(e) => submitForm(e)}>
 				<FormGroup>
 					<Input
 						type='email'
@@ -48,7 +48,7 @@ const SignIn = () => {
 						value={email}
 						valid={validate.emailState === "has-success"}
 						invalid={validate.emailState === "has-danger"}
-						onChange={e => {
+						onChange={(e) => {
 							validateEmail(e);
 							setEmail(e.target.value);
 						}}
@@ -64,7 +64,7 @@ const SignIn = () => {
 						id='password'
 						placeholder='Password'
 						value={password}
-						onChange={e => {
+						onChange={(e) => {
 							setPassword(e.target.value);
 						}}
 					/>

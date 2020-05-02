@@ -1,144 +1,143 @@
-import React, { useState, useEffect, useParams } from "react";
+import React, { useState, useEffect } from "react";
 
 //Components
-import FormInput from "../../components/Forms/Form";
-import LazyLoad from "../../components/Loaders/LazyLoad";
-
-//Assets
-import LogoFD from "../../assets/img/logo.png";
+import ImageModal from "../../components/medias/ImageModal";
 
 //Utils
-import { Button, Card, CardBody, Form, Row, Col } from "reactstrap";
-import { components } from "react-select";
+import { Card, CardBody, Form, Row, Col } from "reactstrap";
 
-//Services
-import { db } from "../../services/Firebase/firebase";
+//Assets
+import LogoGame from "../../assets/img/logo-game.png";
 
-const { Option } = components;
+export default function Answer(props) {
+	const stats = props.stats;
 
-export default function Game(props) {
-	const question = props.currentQuestion;
+	const page = props.currentPage;
 
-	const type = props.questionType;
+	const current = page.page_number;
+	const total = props.totalPages;
 
-	const current = question.id;
-	const total = props.totalQuestion;
+	const [selected] = useState({});
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [imgData] = useState();
 
-	const checkSelected = props.checkSelected;
-	const selectedAnswers = props.selectedAnswers;
-	const [selected, setSelected] = useState(selectedAnswers);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		if (selected !== selectedAnswers) {
-			setSelected(props.selectedAnswers);
-		}
-	});
+		if (page) setLoading(false);
+	}, [page]);
 
-	const handleSelect = option => {
-		checkSelected({ value: option.id, label: option.option });
+	const handleNext = (option) => {
+		props.nextPage(option);
 	};
 
-	const previous = () => {
-		returnQuestionAnswer(current, selected);
-		setSelected([]);
-		props.previousQuestion();
+	const handleModal = () => {
+		setIsModalOpen(!isModalOpen);
 	};
 
-	const next = () => {
-		returnQuestionAnswer(current, selected);
-		setSelected([]);
-		props.nextQuestion();
-	};
+	return page ? (
+		<Form className='container_game h-100'>
+			<Row>
+				<Col xs={{ size: 4, offset: 4 }} className='text-center'>
+					<img className='img-fluid w-75 mb-3' src={LogoGame} alt='logo' />
+				</Col>
 
-	const returnQuestionAnswer = (question, answers) => {
-		console.log(`Answers to question ${question} are : ${answers}`);
-	};
+				<Col xs='8'>
+					<Card className='bg-secondary shadow card-dark'>
+						<CardBody className='page_details'>
+							<Row>
+								<Col xs={`${page.image_id || page.image ? 6 : 12}`} className='page_label'>
+									{page.page_text}
+								</Col>
 
-	return (
-		<>
-			<Form className='container_answer mt--7'>
-				<Card className='bg-secondary shadow'>
-					<CardBody className='question_details'>
-						<Row>
-							<Col xs={`${question.image ? 6 : 12}`} className='question_label'>
-								{question.label}
-								<Row className='question_bottom'>
-									<div className='question_type'>{type}</div>
-									{question.isRequired === true ? (
-										<div className='question_isRequired'>Obligatoire</div>
-									) : null}
-								</Row>
-							</Col>
-
-							<Col xs='6' className={`question_image ${question.image ? "d-block" : "d-none"}`}>
-								{question.image ? <LazyLoad imageId={question.image} /> : null}
-							</Col>
-						</Row>
-
-						<Row className='question_options mt-5'>
-							{type === "Liste déroulante" ? (
-								<>
-									<Col xs='6' className='option_select'>
-										<FormInput.SingleSelect
-											label='Liste déroulante : '
-											id='reponse'
-											name='reponse'
-											option={props => <Option {...props}>{props.data.option}</Option>}
-											value={Object.values(selected).length ? selected : "Choisissez une réponse"}
-											options={Object.values(question.options)}
-											change={handleSelect}
-											placeholder={"Choissez une réponse"}
-										/>
+								{page.image_id || page.image ? (
+									<Col xs='6' className={`page_image ${page.image_id ? "d-block" : "d-none"}`}>
+										{isModalOpen === true && imgData ? (
+											<div className='modal-container'>
+												<ImageModal image={imgData} closeModal={handleModal} />
+											</div>
+										) : null}
 									</Col>
-								</>
-							) : (
-								<>
-									{question.options.map((option, index) => (
-										<Col xs='3' className='option_card' key={index}>
-											<Card
-												onClick={() => checkSelected(index)}
-												className={`${
-													Object.values(selected).includes(index) ? "selected" : null
-												}`}>
-												<h4>{option.option}</h4>
-											</Card>
-										</Col>
-									))}
-								</>
-							)}
-						</Row>
+								) : null}
+							</Row>
 
-						<Row className='buttons_actions align-items-center mt-5'>
-							<Col className='text-left'>
-								<Button
-									className={`${current === 1 ? "invisible" : "visible"}`}
-									color='danger'
-									onClick={() => previous()}
-									size='md'>
-									Retour
-								</Button>
-							</Col>
-							<Col className='text-center'>
-								<img className='img-fluid w-75' src={LogoFD} alt='logo' />
-							</Col>
-							<Col className='text-right'>
-								<Button
-									color='primary'
-									disabled={!selected.length && question.isRequired}
-									onClick={() => next()}
-									size='md'>
-									Répondre
-								</Button>
-							</Col>
-						</Row>
-					</CardBody>
-				</Card>
-			</Form>
-			<Row className='mt-4 justify-content-center'>
-				<div className='question_count'>
-					<span>{current} </span> sur <span> {total}</span>
-				</div>
+							<Row className='page_options mt-5' key={page.id}>
+								{page.page_options.map((option) => (
+									<Col xs='3' className='option_card' key={option.id}>
+										<Card
+											onClick={() => handleNext(option)}
+											className={`${
+												Object.values(selected).includes(option.id) ? "selected" : null
+											}`}>
+											<h4>{option.text}</h4>
+										</Card>
+									</Col>
+								))}
+							</Row>
+
+							<Row className='mt-4 justify-content-center'>
+								<div className='page_count'>
+									<span>Page {current} </span> sur <span> {total}</span>
+								</div>
+							</Row>
+						</CardBody>
+					</Card>
+				</Col>
+
+				<Col xs='4'>
+					<Card className='bg-secondary shadow card-dark'>
+						<CardBody className='page_inventory'>
+							<h3 className='inventory_title text-center bold'>Profil</h3>
+
+							<Row className='justify-content-left align-items-center'>
+								<Col xs='6'>
+									<img className='w-100' alt='avatar' src='/images/avatar.png' />
+								</Col>
+								<Col xs='6' className='player_information'>
+									<h3>{props.pseudo ? props.pseudo : "Romain"}</h3>
+									<div className='health_bar my-2' data-total='100' data-value='100'>
+										<div
+											className='bar'
+											style={{ width: `${(stats.health.value / 100) * 100}%` }}></div>
+									</div>
+
+									<h5 className='text-right'>{stats.health.value} / 100</h5>
+
+									<h4>ATK : {stats.attack.value}</h4>
+									<h4>PTC : {stats.protection.value}</h4>
+								</Col>
+							</Row>
+
+							<Row className='inventory_list mt-5 justify-content-center'>
+								{props.inventory.map((item) => {
+									return (
+										<Col xs={{ size: 3 }} key={item.id} className='mx-2'>
+											<Row className='justify-content-center align-items-center'>
+												<Col xs='12' className='inventory_label'>
+													<p>{item.label}</p>
+												</Col>
+
+												<Col xs='12' className='inventory_image'>
+													<img
+														className='w-100 my-3'
+														src={`/images/inventory/${item.image}.png`}
+														alt='item'
+														style={{ maxHeight: "70px" }}
+													/>
+												</Col>
+
+												<Col xs='12' className='inventory_quantity mt-5'>
+													<p>{item.quantity}</p>
+												</Col>
+											</Row>
+										</Col>
+									);
+								})}
+							</Row>
+						</CardBody>
+					</Card>
+				</Col>
 			</Row>
-		</>
-	);
+		</Form>
+	) : null;
 }

@@ -2,52 +2,94 @@
 	"pages": {
 		"4a251c2a-3664-11ea-aec2-2e728ce88125": {
 			"status": 1,
-			"story_id": "98b24d5c-37fb-11ea-978f-2e728ce88125",
-			"story_slug": "batman",
-			"chapter_id": "8f290f50-38aa-11ea-8851-0bc204a23789",
+			"story_id": "2d4e2cb0-8ca2-11ea-b38b-7549f8dce330",
+			"story_slug": "jaskier",
+			"chapter_id": "0f4867b0-8ca4-11ea-a8d6-e9dc079bbdf9",
 			"chapter_slug": "chapitre-1",
 			"page_id": "4a251c2a-3664-11ea-aec2-2e728ce88125",
 			"page_number": 1,
 			"page_type": 1,
 			"page_image": "",
-			"page_text": "Go to question 2",
+			"page_text": "Page d'introduction",
 			"page_options": [
-				{ "id": 1, "text": "Comme-ca", "redirectTo": 2 },
-				{ "id": 2, "text": "Par-ici", "redirectTo": 2 }
+				{
+					"id": 1,
+					"text": "Cliquer pour choisir cette option",
+					"redirectTo": {
+						"value": 2,
+						"label": 2
+					}
+				},
+				{
+					"id": 2,
+					"text": "Cliquer pour choisir celle-ci",
+					"redirectTo": {
+						"value": 2,
+						"label": 2
+					}
+				},
+				{
+					"id": 3,
+					"text": "Plutôt moi !!",
+					"redirectTo": {
+						"value": 2,
+						"label": 2
+					}
+				}
 			],
 			"user_created": "romain",
-			"user_updated": "theo",
-			"date_created": "2019-12-23T17:26:08+01:00",
-			"date_updated": "2019-12-23T17:26:08+01:00"
+			"date_created": "2019-12-23T17:26:08+01:00"
 		},
 		"d6ab3882-3664-11ea-978f-2e728ce88125": {
 			"status": 1,
-			"story_id": "98b24d5c-37fb-11ea-978f-2e728ce88125",
-			"story_slug": "batman",
-			"chapter_id": "8f290f50-38aa-11ea-8851-0bc204a23789",
+			"story_id": "2d4e2cb0-8ca2-11ea-b38b-7549f8dce330",
+			"story_slug": "jaskier",
+			"chapter_id": "0f4867b0-8ca4-11ea-a8d6-e9dc079bbdf9",
 			"chapter_slug": "chapitre-1",
 			"page_id": "d6ab3882-3664-11ea-978f-2e728ce88125",
 			"page_number": 2,
 			"page_type": 1,
 			"page_image": "",
-			"page_text": "A merchant offers you to take one of its items",
+			"page_text": "Un marchand vous proposer d'acheter un de ses objets",
 			"page_options": [
-				{ "id": 1, "text": "Walk away !", "redirectTo": 3 },
+				{ "id": 1, "text": "Partir sans rien acheter", "redirectTo": 3 },
 				{
 					"id": 2,
-					"text": "Take the wooden sword !",
-					"getItem": [{ "item": "wooden_sword", "quantity": "1" }],
-					"redirectTo": 4
+					"text": "Acheter une épée",
+					"getItem": [{ "id": "sword", "label": "Épée", "quantity": 1 }],
+					"cost": { "id": "gold", "quantity": "400" },
+					"redirectTo": {
+						"value": 4,
+						"label": 4
+					}
 				},
-				{ "id": 3, "text": "Option 3" },
+				{
+					"id": 3,
+					"text": "Acheter un bouclier",
+					"getItem": [{ "id": "shield", "label": "Bouclier", "quantity": 1 }],
+					"cost": { "id": "gold", "quantity": "250" },
+					"redirectTo": {
+						"value": 5,
+						"label": 5
+					}
+				},
 				{
 					"id": 4,
-					"text": "Take the healing potion and the shield",
-					"getItem": [
-						{ "item": "healing_potion", "quantity": "1" },
-						{ "item": "wooden_shield", "quantity": "1" }
-					],
-					"redirectTo": 5
+					"text": "Acheter une potion de soins",
+					"getItem": [{ "id": "healing_potion", "label": "Potion de soin", "quantity": 1 }],
+					"cost": { "id": "gold", "quantity": "50" },
+					"redirectTo": {
+						"value": 6,
+						"label": 6
+					}
+				},
+				{
+					"id": 5,
+					"text": "Attaquer le marchand et lui voler sa marchandise",
+					"redirectTo": {
+						"value": 7,
+						"label": 7
+					}
 				}
 			],
 			"user_created": "romain",

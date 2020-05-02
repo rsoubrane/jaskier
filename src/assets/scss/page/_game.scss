@@ -1,11 +1,19 @@
-.container_answer {
-	.question_details {
+.container_game {
+	height: 100%;
+	width: 100%;
+
+	.card-dark {
+		background-color: rgba(0, 0, 0, 0.8) !important;
+	}
+
+	.page_details {
 		position: relative;
 		height: 100%;
 		width: 90%;
 		margin: auto 5%;
 
-		.question_label {
+		.page_label {
+			color: #fff;
 			user-select: none;
 			position: relative;
 			padding: 20px 0;
@@ -14,7 +22,7 @@
 			line-height: 38px;
 		}
 
-		.question_bottom {
+		.page_bottom {
 			display: flex;
 			flex-direction: row;
 			justify-content: left;
@@ -22,60 +30,9 @@
 			text-align: left;
 			width: 100%;
 			margin: 20px auto;
-
-			.question_type,
-			.question_isRequired {
-				position: relative;
-				margin-right: 10px;
-				padding: 3px 8px;
-				font-size: 0.9rem;
-				color: #707070;
-				background-color: #fff;
-				border: 1px solid #707070;
-				border-radius: 0.175rem;
-			}
 		}
 
-		.question_image {
-			position: relative;
-			height: 100%;
-			user-select: none;
-			background-color: transparent;
-			perspective: 1000px; /* Remove this if you don't want the 3D effect */
-
-			/* Do an horizontal flip when you move the mouse over the flip box container */
-			.flipped {
-				transform: rotateY(180deg);
-			}
-
-			/* This container is needed to position the front and back side */
-			.card_inner {
-				position: relative;
-				height: 100%;
-				width: 80%;
-				margin: auto 10%;
-				text-align: center;
-				transform-style: preserve-3d;
-				transition: transform 0.8s;
-				box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-				border-radius: 6px;
-				cursor: pointer;
-
-				.card_image {
-					display: none;
-					height: 100%;
-					width: 100%;
-					backface-visibility: hidden;
-				}
-
-				.visible {
-					display: block;
-					transition: all ease-in-out 2s;
-				}
-			}
-		}
-
-		.question_options {
+		.page_options {
 			position: relative;
 			display: flex;
 			flex-direction: row;
@@ -125,36 +82,83 @@
 					box-shadow: 0 1px 4px rgba(131, 250, 131, 0.3) inset;
 				}
 			}
+		}
 
-			.option_select {
-				option,
-				select {
-					text-align: left;
-					color: black;
-				}
-			}
+		.page_count {
+			user-select: none;
+			position: relative;
+			text-align: center;
+			width: 15%;
+			font-size: 1rem;
+			line-height: 50px;
+			background-color: #f7fafc;
+			border: rgba(0, 0, 0, 0.5) solid 1px;
+			border-bottom-left-radius: 40% 100%;
+			border-bottom-right-radius: 40% 100%;
+			border-top-left-radius: 40% 100%;
+			border-top-right-radius: 40% 100%;
+			box-shadow: 0 0 2rem 0 rgba(136, 152, 170, 0.15);
 		}
 
 		.buttons_actions {
 			user-select: none;
 		}
 	}
-}
 
-.question_count {
-	user-select: none;
-	position: relative;
-	text-align: center;
-	width: 10%;
-	font-size: 1rem;
-	line-height: 50px;
-	background-color: #f7fafc;
-	border: rgba(0, 0, 0, 0.5) solid 1px;
-	border-bottom-left-radius: 40% 100%;
-	border-bottom-right-radius: 40% 100%;
-	border-top-left-radius: 40% 100%;
-	border-top-right-radius: 40% 100%;
-	box-shadow: 0 0 2rem 0 rgba(136, 152, 170, 0.15);
+	.page_inventory {
+		.inventory_title {
+			color: #fff;
+			text-align: center;
+			user-select: none;
+			position: relative;
+			padding: 20px 0;
+			text-align: justify;
+			font-size: 1.4rem;
+			line-height: 38px;
+		}
+
+		.player_information {
+			color: #fff;
+			font-size: 1.2rem;
+			line-height: 38px;
+
+			.health_bar {
+				box-sizing: border-box;
+				width: 100%;
+				height: 20px;
+				padding: 5px;
+				background: #ddd !important;
+				border-radius: 5px;
+				position: relative;
+			}
+			.bar {
+				background: #c54;
+				height: 10px;
+				position: relative;
+				transition: width 0.5s linear;
+			}
+		}
+
+		.inventory_list {
+			.inventory_label,
+			.inventory_quantity {
+				color: #fff;
+				text-align: center;
+				user-select: none;
+				font-size: 0.9rem;
+			}
+			.inventory_label {
+			}
+
+			.inventory_image {
+				width: 50%;
+			}
+
+			.inventory_quantity {
+				font-weight: bold;
+			}
+		}
+	}
 }
 
 .end_page {
@@ -201,4 +205,50 @@
 			color: black;
 		}
 	}
+}
+
+.game_bg {
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: url("../../img/bg-game.jpg");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	height: 100vh;
+	width: 100vw;
+}
+
+.game_backdrop {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100vh;
+	width: 100vw;
+	background: rgba(0, 0, 0, 0.3) !important;
+}
+
+.game_logo {
+	width: 100%;
+}
+
+.logo_game {
+	position: absolute;
+	top: 10%;
+	left: 50%;
+	transform: translate(-50%, -10%);
+}
+
+.game_screen {
+	position: absolute;
+	top: 30%;
+	left: 50%;
+	transform: translate(-50%, -30%);
+}
+
+.end_text {
+	text-align: center;
+}
+
+.inventory {
 }

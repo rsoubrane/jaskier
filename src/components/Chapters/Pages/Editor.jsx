@@ -9,15 +9,13 @@ import cloneDeep from "lodash/cloneDeep";
 import FormInput from "../../Forms/Form";
 import Option from "./Option";
 
-export default function PageEditor(props) {
-	console.log("props: ", props);
-
+export default function Editor(props) {
 	const isBlockEditorOpen = props.isBlockEditorOpen;
 	const selectedPage = props.selectedPage;
 	const selectedIndex = props.selectedIndex;
 
 	const [pageId, setPageId] = useState(selectedPage.page_id);
-	const [pageNumber, setPageNumber] = useState(selectedPage.page_number);
+	const [setPageNumber] = useState(selectedPage.page_number);
 	const [pageText, setPageText] = useState(selectedPage.page_text);
 	const [pageOptions, setPageOptions] = useState(selectedPage.page_options);
 	const [pageImage, setPageImage] = useState(selectedPage.page_image);
@@ -26,8 +24,18 @@ export default function PageEditor(props) {
 
 	const removePage = props.removePage;
 
+	const [redirectList, setRedirectList] = useState([]);
+
 	useEffect(() => {
-		if (props.selectedPage.page_number !== pageNumber) {
+		const options = new Array(props.pages.length).fill().map((e, i) => {
+			return { value: i + 1, label: i + 1 };
+		});
+
+		setRedirectList(options);
+	}, [props.pages]);
+
+	useEffect(() => {
+		if (props.selectedPage.page_id !== pageId) {
 			setPageId(props.selectedPage.page_id);
 			setPageNumber(props.selectedPage.page_number);
 			setPageText(props.selectedPage.page_text);
@@ -38,30 +46,35 @@ export default function PageEditor(props) {
 		props.selectedPage.page_id,
 		props.selectedPage.page_number,
 		props.selectedPage.page_text,
-		props.selectedPage.page_image,
 		props.selectedPage.page_options,
-		pageNumber
+		props.selectedPage.page_image,
+		pageId,
 	]);
 
-	const handleChangeText = e => {
+	const handleChangeText = (e) => {
 		setPageText(e.target.value);
 	};
 
-	const handleChangeOptions = e => {
-		e.preventDefault();
-
+	const handleChangeOptions = (e) => {
 		let id = e.target.id;
 		let value = e.target.value;
 		const copyOptions = cloneDeep(pageOptions);
-		copyOptions[id].option = value;
+		copyOptions[id].text = value;
 		setPageOptions(copyOptions);
 	};
 
-	const addOption = indexOption => {
+	const handleChangeRedirect = (option, id) => {
+		console.log("option: ", option);
+		const copyOptions = cloneDeep(pageOptions);
+		copyOptions[id - 1].redirectTo = option;
+		setPageOptions(copyOptions);
+	};
+
+	const addOption = (indexOption) => {
 		const copyOptions = cloneDeep(pageOptions).slice();
 		const newOption = {
 			id: copyOptions.length + 1,
-			text: "Nouvelle option ..."
+			text: "Nouvelle option ...",
 		};
 		copyOptions.splice(indexOption + 1, 0, newOption);
 
@@ -77,14 +90,14 @@ export default function PageEditor(props) {
 		setPageOptions(copyOptions);
 	};
 
-	const removeOption = indexOption => {
+	const removeOption = (indexOption) => {
 		const copyOptions = cloneDeep(pageOptions);
 		copyOptions.splice(indexOption, 1);
 
 		setPageOptions(copyOptions);
 	};
 
-	const handleChangeImage = e => {
+	const handleChangeImage = (e) => {
 		e.preventDefault();
 
 		var file = e.target.files[0];
@@ -99,7 +112,7 @@ export default function PageEditor(props) {
 		setPageImage("");
 	};
 
-	const cancelChanges = idPage => {
+	const cancelChanges = (idPage) => {
 		revertValues();
 		props.cancelChanges(idPage);
 	};
@@ -110,7 +123,7 @@ export default function PageEditor(props) {
 				page_id: pageId,
 				page_text: pageText,
 				page_image: pageImage,
-				page_options: pageOptions
+				page_options: pageOptions,
 			},
 			pageId
 		);
@@ -122,7 +135,7 @@ export default function PageEditor(props) {
 		setPageImage(selectedPage.page_image);
 	};
 
-	const onDragEnd = result => {
+	const onDragEnd = (result) => {
 		const reorder = (list, startIndex, endIndex) => {
 			const result = Array.from(list);
 			const [removed] = result.splice(startIndex, 1);
@@ -165,7 +178,7 @@ export default function PageEditor(props) {
 											/>
 
 											<Droppable droppableId='optionsList'>
-												{provided => (
+												{(provided) => (
 													<>
 														<div
 															className='pages_options_list'
@@ -179,17 +192,24 @@ export default function PageEditor(props) {
 																	<Draggable
 																		draggableId={option.id.toString()}
 																		index={key}>
-																		{provided => (
-																			<Option.Choices
-																				index={key}
-																				option={option}
-																				pageOptions={pageOptions}
-																				add={addOption}
-																				duplicate={duplicateOption}
-																				remove={removeOption}
-																				change={handleChangeOptions}
-																				provided={provided}
-																			/>
+																		{(provided) => (
+																			<>
+																				<Option.Choices
+																					index={key}
+																					option={option}
+																					pageOptions={pageOptions}
+																					add={addOption}
+																					duplicate={duplicateOption}
+																					remove={removeOption}
+																					change={handleChangeOptions}
+																					id={option.id}
+																					redirectList={redirectList}
+																					changeRedirect={
+																						handleChangeRedirect
+																					}
+																					provided={provided}
+																				/>
+																			</>
 																		)}
 																	</Draggable>
 																</div>
@@ -211,6 +231,7 @@ export default function PageEditor(props) {
 													pageImage={pageImage}
 													removeImage={removeImage}
 													change={handleChangeImage}
+													disabled='true'
 												/>
 											</div>
 										</div>

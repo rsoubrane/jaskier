@@ -1,15 +1,16 @@
 import { db } from "../Firebase/firebase";
-import uuid from "uuid/v1";
+import { v1 as uuid } from "uuid";
 
-export const getPages = async chapter => {
+export const getPages = async (chapter) => {
 	console.log("chapter: ", chapter);
 	const pages = [];
 	await db
 		.collection("pages")
 		.where("chapter_id", "==", chapter.chapter_id)
+		.orderBy("page_number", "asc")
 		.get()
-		.then(querySnapshot => {
-			querySnapshot.docs.forEach(doc => {
+		.then((querySnapshot) => {
+			querySnapshot.docs.forEach((doc) => {
 				pages.push(doc.data());
 			});
 		});
@@ -30,26 +31,30 @@ export const submitAddPage = async (chapterInfos, newPage, indexPage) => {
 		page_text: newPage.page_text,
 		page_options: newPage.page_options,
 		user_created: "romain",
-		user_updated: "",
 		date_created: new Date(),
-		date_updated: ""
 	};
-	await db
-		.collection("pages")
-		.doc(uid)
-		.set(data);
+	await db.collection("pages").doc(uid).set(data);
 	console.log(`Page ${uid} Added`);
 };
 
-export const submitEditPage = (newPage, indexPage, indexArrange) => {
-	console.log(`Page ${indexPage} Edited`);
+export const submitEditPage = async (newPage, indexPage) => {
 	console.log("newPage: ", newPage);
+	let data = {
+		page_id: newPage.page_id,
+		page_image: newPage.page_image || null,
+		page_text: newPage.page_text,
+		page_options: newPage.page_options,
+		user_updated: "romain",
+		date_updated: new Date(),
+	};
+
+	await db.collection("pages").doc(newPage.page_id).set(data, { merge: true });
+
+	console.log(`Page ${indexPage} Edited`);
 };
 
-export const submitRemovePage = async page_id => {
-	await db
-		.collection("pages")
-		.doc(page_id)
-		.delete();
+export const submitRemovePage = async (page_id) => {
+	console.log("page_id: ", page_id);
+	await db.collection("pages").doc(page_id).delete();
 	return console.log(`Page ${page_id} Removed`);
 };
