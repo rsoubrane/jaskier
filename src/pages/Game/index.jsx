@@ -92,7 +92,6 @@ export default class GamePage extends Component {
 						pages,
 					},
 					() => {
-						console.log("pages: ", this.state.pages);
 						this.setState({
 							currentPage: this.state.pages[this.state.currentPageNumber],
 						});
@@ -109,19 +108,59 @@ export default class GamePage extends Component {
 
 	nextPage = (answer) => {
 		const index = this.state.pages.findIndex((x) => x.page_number === answer.redirectTo.value);
+		const stats = this.state.stats;
+		const inventory = this.state.inventory;
+		const findIndexItemById = (id) => {
+			const index = inventory.findIndex((x) => x.id === id);
+			return index;
+		};
+
+		if (answer.getItem || answer.removeItem) {
+			if (answer.getItem) {
+				const indexItem = findIndexItemById(answer.getItem.id);
+				if (answer.getItem.id === "gold")
+					stats.gold["value"] = stats.gold.value + answer.getItem.quantity.value;
+				else {
+					inventory[indexItem].quantity["value"] =
+						inventory[indexItem].quantity.value + answer.getItem.quantity.value;
+					inventory[indexItem].quantity["label"] =
+						inventory[indexItem].quantity.value + answer.getItem.quantity.value;
+				}
+			}
+
+			if (answer.removeItem) {
+				const indexItem = findIndexItemById(answer.removeItem.id);
+				if (answer.removeItem.id === "gold")
+					stats.gold["value"] = stats.gold.value - answer.removeItem.quantity.value;
+				else {
+					inventory[indexItem].quantity["value"] =
+						inventory[indexItem].quantity.value - answer.removeItem.quantity.value;
+					inventory[indexItem].quantity["label"] =
+						inventory[indexItem].quantity.value - answer.removeItem.quantity.value;
+				}
+			}
+		}
+
 		this.setState(
 			{
 				answers: [...this.state.answers, answer],
+				stats,
+				inventory,
 			},
 			() => {
 				if (this.state.currentPageNumber >= this.state.pages.length) {
 					this.submitAnswers();
-					this.setState({ step: 2 });
+					// this.setState({ step: 2 });
 				} else {
-					this.setState({
-						currentPageNumber: answer.redirectTo,
-						currentPage: this.state.pages[index],
-					});
+					this.setState(
+						{
+							currentPageNumber: answer.redirectTo.value,
+							currentPage: this.state.pages[index],
+						},
+						() => {
+							console.log(this.state.currentPage);
+						}
+					);
 				}
 			}
 		);

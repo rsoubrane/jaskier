@@ -38,11 +38,11 @@ export default function Answer(props) {
 	return page ? (
 		<Form className='container_game h-100'>
 			<Row>
-				<Col xs={{ size: 4, offset: 4 }} className='text-center'>
+				<Col xs={{ size: 10, offset: 1 }} lg={{ size: 4, offset: 4 }} className='text-center'>
 					<img className='img-fluid w-75 mb-3' src={LogoGame} alt='logo' />
 				</Col>
 
-				<Col xs='8'>
+				<Col xs={{ size: 10, offset: 1 }} lg={{ size: 8, offset: 0 }}>
 					<Card className='bg-secondary shadow card-dark'>
 						<CardBody className='page_details'>
 							<Row>
@@ -63,7 +63,7 @@ export default function Answer(props) {
 
 							<Row className='page_options mt-5' key={page.id}>
 								{page.page_options.map((option) => (
-									<Col xs='3' className='option_card' key={option.id}>
+									<Col xs='6' lg='3' className='option_card' key={option.id}>
 										<Card
 											onClick={() => handleNext(option)}
 											className={`${
@@ -75,7 +75,7 @@ export default function Answer(props) {
 								))}
 							</Row>
 
-							<Row className='mt-4 justify-content-center'>
+							<Row className='mt-4 justify-content-end'>
 								<div className='page_count'>
 									<span>Page {current} </span> sur <span> {total}</span>
 								</div>
@@ -84,7 +84,7 @@ export default function Answer(props) {
 					</Card>
 				</Col>
 
-				<Col xs='4'>
+				<Col xs={{ size: 10, offset: 1 }} lg={{ size: 4, offset: 0 }} className='mt-5 mt-lg-0'>
 					<Card className='bg-secondary shadow card-dark'>
 						<CardBody className='page_inventory'>
 							<h3 className='inventory_title text-center bold'>Profil</h3>
@@ -103,6 +103,7 @@ export default function Answer(props) {
 
 									<h5 className='text-right'>{stats.health.value} / 100</h5>
 
+									<h4>$ {stats.gold.value}</h4>
 									<h4>ATK : {stats.attack.value}</h4>
 									<h4>PTC : {stats.protection.value}</h4>
 								</Col>
@@ -110,11 +111,12 @@ export default function Answer(props) {
 
 							<Row className='inventory_list mt-5 justify-content-center'>
 								{props.inventory.map((item) => {
-									return (
+									return item.quantity.value > 0 ? (
 										<Col xs={{ size: 3 }} key={item.id} className='mx-2'>
 											<Row className='justify-content-center align-items-center'>
-												<Col xs='12' className='inventory_label'>
+												<Col xs='12' className='inventory_label d-inline-flex'>
 													<p>{item.label}</p>
+													<p> {item.type === "potion" ? `(${item.quantity.value})` : null}</p>
 												</Col>
 
 												<Col xs='12' className='inventory_image'>
@@ -127,11 +129,11 @@ export default function Answer(props) {
 												</Col>
 
 												<Col xs='12' className='inventory_quantity mt-5'>
-													<p>{item.quantity}</p>
+													<p></p>
 												</Col>
 											</Row>
 										</Col>
-									);
+									) : null;
 								})}
 							</Row>
 						</CardBody>

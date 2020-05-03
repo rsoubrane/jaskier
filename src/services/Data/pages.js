@@ -2,7 +2,6 @@ import { db } from "../Firebase/firebase";
 import { v1 as uuid } from "uuid";
 
 export const getPages = async (chapter) => {
-	console.log("chapter: ", chapter);
 	const pages = [];
 	await db
 		.collection("pages")
@@ -38,7 +37,6 @@ export const submitAddPage = async (chapterInfos, newPage, indexPage) => {
 };
 
 export const submitEditPage = async (newPage, indexPage) => {
-	console.log("newPage: ", newPage);
 	let data = {
 		page_id: newPage.page_id,
 		page_image: newPage.page_image || null,
@@ -47,14 +45,11 @@ export const submitEditPage = async (newPage, indexPage) => {
 		user_updated: "romain",
 		date_updated: new Date(),
 	};
-
-	await db.collection("pages").doc(newPage.page_id).set(data, { merge: true });
-
+	await db.collection("pages").doc(newPage.page_id.toString()).set(data, { merge: true });
 	console.log(`Page ${indexPage} Edited`);
 };
 
 export const submitRemovePage = async (page_id) => {
-	console.log("page_id: ", page_id);
 	await db.collection("pages").doc(page_id).delete();
 	return console.log(`Page ${page_id} Removed`);
 };

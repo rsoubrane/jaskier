@@ -29,7 +29,6 @@
 			align-items: center;
 			text-align: left;
 			width: 100%;
-			margin: 20px auto;
 		}
 
 		.page_options {
@@ -41,24 +40,23 @@
 			text-align: center;
 			width: 100%;
 			height: 100%;
-			margin: 20px auto;
 			user-select: none;
 
 			.option_card {
 				position: relative;
 				width: 100%;
-				margin-bottom: 30px;
+				margin: 30px 20px;
 
 				.card {
 					position: relative;
-					min-height: 100px;
+					min-height: 125px;
+					min-width: 170px;
 					height: 100%;
 					width: 100%;
 					word-break: keep-all;
 					white-space: normal;
 					letter-spacing: 0.05em;
 					font-size: 1.1rem;
-					padding: 8px;
 					border: rgba(0, 0, 0, 0.3) solid 1px;
 					box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048);
 
@@ -88,7 +86,7 @@
 			user-select: none;
 			position: relative;
 			text-align: center;
-			width: 15%;
+			width: 150px;
 			font-size: 1rem;
 			line-height: 50px;
 			background-color: #f7fafc;
@@ -215,16 +213,16 @@
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
-	height: 100vh;
-	width: 100vw;
+	height: 100%;
+	width: 100%;
 }
 
 .game_backdrop {
 	position: absolute;
 	top: 0;
 	left: 0;
-	height: 100vh;
-	width: 100vw;
+	height: 100%;
+	width: 100%;
 	background: rgba(0, 0, 0, 0.3) !important;
 }
 

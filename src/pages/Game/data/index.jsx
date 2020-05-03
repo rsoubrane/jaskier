@@ -1,24 +1,24 @@
 export const player_stats = {
 	gold: {
-		id: 0,
+		id: "gold",
 		label: "Gold",
 		short: "$",
 		value: 500,
 	},
 	health: {
-		id: 1,
+		id: "health",
 		label: "Santé",
 		short: "SNT",
 		value: 50,
 	},
 	attack: {
-		id: 2,
+		id: "attack",
 		label: "Attaque",
 		short: "ATK",
 		value: 20,
 	},
 	protection: {
-		id: 3,
+		id: "protection",
 		label: "Protection",
 		short: "PTC",
 		value: 20,
@@ -28,7 +28,8 @@ export const player_stats = {
 export const player_inventory = [
 	{
 		id: "health_potion",
-		label: "Potion de soin",
+		type: "potion",
+		label: "Potion",
 		description: "Une potion pour récupérer des points de vie.",
 		details: [
 			{
@@ -38,7 +39,10 @@ export const player_inventory = [
 				skill_change: 20,
 			},
 		],
-		quantity: "5",
+		quantity: {
+			label: 5,
+			value: 5,
+		},
 		image: "health_potion",
 	},
 	{
@@ -54,7 +58,10 @@ export const player_inventory = [
 				skill_change: 50,
 			},
 		],
-		quantity: "0",
+		quantity: {
+			label: 0,
+			value: 0,
+		},
 		image: "sword",
 	},
 	{
@@ -69,7 +76,40 @@ export const player_inventory = [
 				skill_change: 100,
 			},
 		],
-		quantity: "0",
+		quantity: {
+			label: 0,
+			value: 0,
+		},
 		image: "shield",
 	},
 ];
+
+export const data = [
+	{
+		id: "gold",
+		label: "Gold",
+		value: "Gold",
+	},
+	{
+		id: "health_potion",
+		label: "Potion",
+		value: "Potion",
+	},
+	{
+		id: "sword",
+		label: "Épée",
+		value: "Épée",
+	},
+	{
+		id: "shield",
+		label: "Bouclier",
+		value: "Bouclier",
+	},
+];
+
+export const quantityItem = new Array(5).fill().map((e, i) => {
+	return { value: i + 1, label: i + 1 };
+});
+export const quantityGold = new Array(10).fill().map((e, i) => {
+	return { value: 50 * i, label: 50 * i };
+});

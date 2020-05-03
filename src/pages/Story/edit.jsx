@@ -24,7 +24,7 @@ export default function StoryEdit(props) {
 	const [loading, setLoading] = useState(false);
 	const [errors] = useState(false);
 
-	const handleChange = e => {
+	const handleChange = (e) => {
 		let slug = "";
 		if (e.currentTarget.name === "name") {
 			slug = e.currentTarget.value
@@ -35,18 +35,18 @@ export default function StoryEdit(props) {
 		setStory({
 			...story,
 			[e.currentTarget.name]: e.currentTarget.value,
-			slug
+			slug,
 		});
 		if (story.name && story.description) setDisabledForm(false);
 	};
 
-	const onPreviewDrop = files => {
+	const onPreviewDrop = (files) => {
 		if (files.length) {
 			let reader = new FileReader();
-			reader.onload = e => {
+			reader.onload = (e) => {
 				setStory({
 					...story,
-					image: e.target.result
+					image: e.target.result,
 				});
 			};
 			reader.readAsDataURL(files[0]);
@@ -58,18 +58,17 @@ export default function StoryEdit(props) {
 	const removeImage = () => {
 		setStory({
 			...story,
-			image: ""
+			image: "",
 		});
 	};
 
 	const submitStory = async () => {
-		console.log("story: ", story);
 		setLoading(true);
 		const newStory = {
 			name: story.name,
 			slug: story.slug,
 			image: story.image || "",
-			description: story.description
+			description: story.description,
 		};
 		const res = await editStory(story.story_id, newStory, username);
 		if (res === "success") {
@@ -80,7 +79,7 @@ export default function StoryEdit(props) {
 
 	const previewStyle = {
 		display: "block",
-		width: "80%"
+		width: "80%",
 	};
 
 	return (
@@ -167,7 +166,7 @@ export default function StoryEdit(props) {
 																			<strong>DRAG & DROP</strong>
 																			<Button
 																				className='btn btn-secondary btn-outlined'
-																				onClick={e => e.preventDefault()}>
+																				onClick={(e) => e.preventDefault()}>
 																				OU SELECTIONNER UNE IMAGE
 																			</Button>
 																		</div>

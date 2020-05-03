@@ -52,22 +52,61 @@
 			"page_image": "",
 			"page_text": "Un marchand vous proposer d'acheter un de ses objets",
 			"page_options": [
-				{ "id": 1, "text": "Partir sans rien acheter", "redirectTo": 3 },
+				{
+					"id": 1,
+					"text": "Partir sans rien acheter",
+					"redirectTo": {
+						"value": 3,
+						"label": 3
+					}
+				},
 				{
 					"id": 2,
 					"text": "Acheter une épée",
-					"getItem": [{ "id": "sword", "label": "Épée", "quantity": 1 }],
-					"cost": { "id": "gold", "quantity": "400" },
+					"getItem": {
+						"id": "sword",
+						"label": "Épée",
+						"value": "Épée",
+						"quantity": {
+							"label": 1,
+							"value": 1
+						}
+					},
+					"removeItem": {
+						"id": "gold",
+						"label": "Gold",
+						"value": "Gold",
+						"quantity": {
+							"label": 400,
+							"value": 400
+						}
+					},
 					"redirectTo": {
-						"value": 4,
-						"label": 4
+						"value": 3,
+						"label": 3
 					}
 				},
 				{
 					"id": 3,
 					"text": "Acheter un bouclier",
-					"getItem": [{ "id": "shield", "label": "Bouclier", "quantity": 1 }],
-					"cost": { "id": "gold", "quantity": "250" },
+					"getItem": {
+						"id": "shield",
+						"label": "Bouclier",
+						"value": "Bouclier",
+						"quantity": {
+							"label": 1,
+							"value": 1
+						}
+					},
+					"removeItem": {
+						"id": "gold",
+						"label": "Gold",
+						"value": "Gold",
+						"quantity": {
+							"label": 250,
+							"value": 250
+						}
+					},
 					"redirectTo": {
 						"value": 5,
 						"label": 5
@@ -76,8 +115,24 @@
 				{
 					"id": 4,
 					"text": "Acheter une potion de soins",
-					"getItem": [{ "id": "healing_potion", "label": "Potion de soin", "quantity": 1 }],
-					"cost": { "id": "gold", "quantity": "50" },
+					"getItem": {
+						"id": "healing_potion",
+						"label": "Potion",
+						"value": "Potion",
+						"quantity": {
+							"label": 1,
+							"value": 1
+						}
+					},
+					"removeItem": {
+						"id": "gold",
+						"label": "Gold",
+						"value": "Gold",
+						"quantity": {
+							"label": 50,
+							"value": 50
+						}
+					},
 					"redirectTo": {
 						"value": 6,
 						"label": 6
@@ -93,9 +148,7 @@
 				}
 			],
 			"user_created": "romain",
-			"user_updated": "theo",
-			"date_created": "2019-12-23T17:26:08+01:00",
-			"date_updated": "2019-12-23T17:26:08+01:00"
+			"date_created": "2019-12-23T17:26:08+01:00"
 		}
 	}
 }

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 //Utils
-import { Button, Col, Label } from "reactstrap";
+import { Button, Col, Label, Input } from "reactstrap";
 import cloneDeep from "lodash/cloneDeep";
 import Select from "react-select";
 
@@ -16,29 +16,28 @@ import {
 	MdFormatAlignCenter as Handle,
 } from "react-icons/md";
 
-Option.Boolean = class Boolean extends Component {
-	render() {
-		const option = cloneDeep(this.props.option);
-		const id = this.props.index;
+//Data
+import { data, quantityGold, quantityItem } from "../../../pages/Game/data";
 
-		return (
-			<Col xs='11' className='input_option'>
-				<FormInput.InputText
-					id={id}
-					name={`Option${id}`}
-					value={option.text}
-					change={this.props.handleChange}
-				/>
-			</Col>
-		);
-	}
-};
-
-Option.Choices = class Choices extends Component {
+export default class Option extends Component {
 	render() {
 		const option = cloneDeep(this.props.option);
 
-		const { provided, id, pageOptions, add, duplicate, remove, change, redirectList, changeRedirect } = this.props;
+		const {
+			provided,
+			id,
+			pageOptions,
+			add,
+			duplicate,
+			remove,
+			change,
+			redirectList,
+			changeRedirect,
+			changeGetItem,
+			changeRemoveItem,
+			changeQuantityGet,
+			changeQuantityRemove,
+		} = this.props;
 
 		return (
 			<div
@@ -49,10 +48,20 @@ Option.Choices = class Choices extends Component {
 					<Handle />
 				</Col>
 
-				<Col xs='10' lg='8' className='input_option'>
-					<FormInput.InputText id={id} name={`Option${id}`} value={option.text} change={change} />
+				<Col xs='10' lg='9' className='input_option'>
+					<Input
+						type='text'
+						className={"form-control-alternative" + (this.props.error ? " is-invalid" : "")}
+						value={option.text}
+						id={option.id}
+						name={`Option${id}`}
+						placeholder='Entrer une option'
+						onChange={(e) => change(e)}
+						autoComplete='off'
+					/>
 				</Col>
-				<Col xs='1' lg='3' className='action_icons'>
+
+				<Col xs='1' lg='2' className='action_icons'>
 					<Button size='sm' className='icon_container' onClick={() => duplicate(option, id)}>
 						<Duplicate className='icon' />
 					</Button>
@@ -64,10 +73,10 @@ Option.Choices = class Choices extends Component {
 					</Button>
 				</Col>
 
-				<div className='w-25 mt-2 mb-5'>
-					<Label htmlFor={id}>Vers page :</Label>
+				<div className='w-50 mt-3 px-2'>
+					<Label htmlFor={id}>Redirige page :</Label>
 					<Select
-						placeholder='Choisir page'
+						placeholder='Choix page'
 						inputProps={{ id }}
 						className='basic-single'
 						value={pageOptions[id - 1].redirectTo}
@@ -75,9 +84,59 @@ Option.Choices = class Choices extends Component {
 						onChange={(option) => changeRedirect(option, id)}
 					/>
 				</div>
+
+				<div className='w-25 mt-3 px-2'>
+					<Label htmlFor={id}>Donner :</Label>
+					<Select
+						placeholder='Donner'
+						inputProps={{ id }}
+						className='basic-single'
+						value={pageOptions[id - 1].getItem}
+						options={data}
+						onChange={(option) => changeGetItem(option, id)}
+					/>
+				</div>
+
+				<div className='w-25 mt-3 px-2'>
+					<Label htmlFor={id}>Retirer :</Label>
+					<Select
+						placeholder='Retirer'
+						inputProps={{ id }}
+						className='basic-single'
+						value={pageOptions[id - 1].removeItem}
+						options={data}
+						onChange={(option) => changeRemoveItem(option, id)}
+					/>
+				</div>
+
+				<div className='w-50 mt-2 mb-5 px-2'></div>
+				{pageOptions[id - 1].getItem ? (
+					<div className='w-25 mt-2 mb-5 px-2'>
+						<Label htmlFor={id}>Quantité :</Label>
+						<Select
+							placeholder='Quantité'
+							inputProps={{ id }}
+							className='basic-single'
+							value={pageOptions[id - 1].getItem.quantity}
+							options={pageOptions[id - 1].getItem.label === "Gold" ? quantityGold : quantityItem}
+							onChange={(option) => changeQuantityGet(option, id)}
+						/>
+					</div>
+				) : null}
+				{pageOptions[id - 1].removeItem ? (
+					<div className='w-25 mt-2 mb-5 px-2'>
+						<Label htmlFor={id}>Quantité :</Label>
+						<Select
+							placeholder='Quantité'
+							inputProps={{ id }}
+							className='basic-single'
+							value={pageOptions[id - 1].removeItem.quantity}
+							options={pageOptions[id - 1].removeItem.label === "Gold" ? quantityGold : quantityItem}
+							onChange={(option) => changeQuantityRemove(option, id)}
+						/>
+					</div>
+				) : null}
 			</div>
 		);
 	}
-};
-
-export default Option;
+}

@@ -108,6 +108,7 @@ export default function ChaptersDetails(props) {
 
 		const newPage = (copyPages[selectedIndex] = {
 			page_id: selectedPage.page_id,
+			page_number: selectedIndex + 1,
 			page_text: updatedPage.page_text,
 			page_options: updatedPage.page_options,
 			page_image: updatedPage.page_image,

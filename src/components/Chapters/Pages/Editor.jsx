@@ -15,7 +15,7 @@ export default function Editor(props) {
 	const selectedIndex = props.selectedIndex;
 
 	const [pageId, setPageId] = useState(selectedPage.page_id);
-	const [setPageNumber] = useState(selectedPage.page_number);
+	const [pageNumber, setPageNumber] = useState(selectedPage.page_number);
 	const [pageText, setPageText] = useState(selectedPage.page_text);
 	const [pageOptions, setPageOptions] = useState(selectedPage.page_options);
 	const [pageImage, setPageImage] = useState(selectedPage.page_image);
@@ -41,6 +41,7 @@ export default function Editor(props) {
 			setPageText(props.selectedPage.page_text);
 			setPageOptions(props.selectedPage.page_options);
 			setPageImage(props.selectedPage.page_image);
+			window.scrollTo(0, 0);
 		}
 	}, [
 		props.selectedPage.page_id,
@@ -56,44 +57,71 @@ export default function Editor(props) {
 	};
 
 	const handleChangeOptions = (e) => {
-		let id = e.target.id;
 		let value = e.target.value;
-		const copyOptions = cloneDeep(pageOptions);
-		copyOptions[id].text = value;
+		const copyOptions = cloneDeep(pageOptions).slice();
+		const index = copyOptions.findIndex((x) => x.id == e.target.id);
+		copyOptions[index].text = value;
 		setPageOptions(copyOptions);
 	};
-
 	const handleChangeRedirect = (option, id) => {
-		console.log("option: ", option);
 		const copyOptions = cloneDeep(pageOptions);
 		copyOptions[id - 1].redirectTo = option;
 		setPageOptions(copyOptions);
 	};
+	const handleChangeGetItem = (option, id) => {
+		const copyOptions = cloneDeep(pageOptions);
+		copyOptions[id - 1].getItem = {
+			...option,
+			quantity: {
+				label: 1,
+				value: 1,
+			},
+		};
+		setPageOptions(copyOptions);
+	};
+	const handleChangeRemoveItem = (option, id) => {
+		const copyOptions = cloneDeep(pageOptions);
+		copyOptions[id - 1].removeItem = {
+			...option,
+			quantity: {
+				label: 1,
+				value: 1,
+			},
+		};
+		setPageOptions(copyOptions);
+	};
+	const handleChangeQuantityGet = (option, id) => {
+		const copyOptions = cloneDeep(pageOptions);
+		copyOptions[id - 1].getItem.quantity = option;
+		setPageOptions(copyOptions);
+	};
+	const handleChangeQuantityRemove = (option, id) => {
+		const copyOptions = cloneDeep(pageOptions);
+		copyOptions[id - 1].removeItem.quantity = option;
+		setPageOptions(copyOptions);
+	};
 
-	const addOption = (indexOption) => {
+	const addOption = (idOption) => {
+		const index = pageOptions.findIndex((x) => x.id == idOption);
 		const copyOptions = cloneDeep(pageOptions).slice();
 		const newOption = {
 			id: copyOptions.length + 1,
 			text: "Nouvelle option ...",
 		};
-		copyOptions.splice(indexOption + 1, 0, newOption);
-
+		copyOptions.splice(index + 1, 0, newOption);
 		setPageOptions(copyOptions);
 	};
-
-	const duplicateOption = (optionToDuplicate, indexOption) => {
+	const duplicateOption = (optionToDuplicate, idOption) => {
+		const index = pageOptions.findIndex((x) => x.id == idOption);
 		const copyOptions = cloneDeep(pageOptions).slice();
-
 		optionToDuplicate.id = copyOptions.length + 1;
-		copyOptions.splice(indexOption + 1, 0, optionToDuplicate);
-
+		copyOptions.splice(index + 1, 0, optionToDuplicate);
 		setPageOptions(copyOptions);
 	};
-
-	const removeOption = (indexOption) => {
-		const copyOptions = cloneDeep(pageOptions);
-		copyOptions.splice(indexOption, 1);
-
+	const removeOption = (idOption) => {
+		const index = pageOptions.findIndex((x) => x.id === idOption);
+		const copyOptions = cloneDeep(pageOptions).slice();
+		if (pageOptions.length > 1) copyOptions.splice(index, 1);
 		setPageOptions(copyOptions);
 	};
 
@@ -154,8 +182,6 @@ export default function Editor(props) {
 		}
 	};
 
-	console.log("pageOptions: ", pageOptions);
-
 	return (
 		<DragDropContext onDragEnd={onDragEnd}>
 			<Col lg='6' className={`mb-5 creator_edit ${!isBlockEditorOpen ? "open" : null}`}>
@@ -168,7 +194,7 @@ export default function Editor(props) {
 									<Col xs='12'>
 										<div className='container_page_editor'>
 											<FormInput.InputTextArea
-												label='Text :'
+												label='Texte :'
 												id='label'
 												rows={2}
 												maxlength={250}
@@ -194,7 +220,7 @@ export default function Editor(props) {
 																		index={key}>
 																		{(provided) => (
 																			<>
-																				<Option.Choices
+																				<Option
 																					index={key}
 																					option={option}
 																					pageOptions={pageOptions}
@@ -206,6 +232,16 @@ export default function Editor(props) {
 																					redirectList={redirectList}
 																					changeRedirect={
 																						handleChangeRedirect
+																					}
+																					changeGetItem={handleChangeGetItem}
+																					changeRemoveItem={
+																						handleChangeRemoveItem
+																					}
+																					changeQuantityGet={
+																						handleChangeQuantityGet
+																					}
+																					changeQuantityRemove={
+																						handleChangeQuantityRemove
 																					}
 																					provided={provided}
 																				/>

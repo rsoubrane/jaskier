@@ -74,12 +74,10 @@ export const editChapter = async (chapter_id, newChapter, username) => {
 
 export const removeChapter = async (chapter_id) => {
 	await db.collection("chapters").doc(chapter_id).delete();
-
 	return console.log(`Chapter ${chapter_id} successfully deleted !`);
 };
 
 export const getChapters = async (storySlug) => {
-	console.log("chapterSlug: ", storySlug);
 	let chapters = [];
 	await db
 		.collection("chapters")
